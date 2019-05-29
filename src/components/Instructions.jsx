@@ -74,7 +74,7 @@ const instructionText = [
     After the app has finishing deploying, you should be able to click a blue port 80 link to see it running.
     <br />
     <br />
-        Press the button to find get the secret!
+        Press the button to get the secret!
     <br />
     <br />
   </div>
