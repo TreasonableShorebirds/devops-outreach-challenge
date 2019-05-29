@@ -62,19 +62,19 @@ const instructionText = [
     Once you are logged in on Play with Docker, hit the start button. On the left, select Add New Instance. This will create a Docker playground for you to run commands in.
     <br />
     <br />
-    Run Sock-shop!
+    Run devops-demo-app!
     <br />
     <Segment color='green'>
       <code>
-		  $ git clone https://github.com/YOUR_USERNAME/microservices-demo <br />
-		  $ cd microservices-demo/deploy/docker-compose<br />
+		  $ git clone https://github.com/YOUR_USERNAME/devops-demo-app <br />
+		  $ cd devops-demo-app<br />
 		  $ docker-compose up
       </code>
     </Segment>
-    After Sock-shop has finishing deploying, you should be able to click a blue port 80 link to see it running.
+    After the app has finishing deploying, you should be able to click a blue port 80 link to see it running.
     <br />
     <br />
-    Scroll down to "Hot This Week" on Sock-shop's homepage and enter the name of the socks that cost $99.99 to complete the DevOps Challenge.
+        Press the button to find get the secret!
     <br />
     <br />
   </div>

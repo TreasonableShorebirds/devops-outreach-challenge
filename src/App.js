@@ -94,7 +94,7 @@ class App extends Component {
         return a.json();
       })
       .then(function(b) {
-        if (b.builds.length > 0) {
+        if ( b.builds && b.builds.length > 0) {
           return true;
         }
         else {
@@ -269,11 +269,11 @@ class App extends Component {
                   <Instructions
                     activeStep={ this.state.active }
                     set={ this.setUser }
-                    updateP={ this.updateProgress } 
+                    updateP={ this.updateProgress }
                     done={ this.completeAll }
                   /> }
               </Grid.Column>
-            </Grid.Row> 
+            </Grid.Row>
             <Grid.Row centered>
               <Footer />
             </Grid.Row>
