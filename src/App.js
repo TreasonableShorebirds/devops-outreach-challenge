@@ -88,7 +88,7 @@ class App extends Component {
   hasEnabledTravis(u) {
     const url =
       'https://api.travis-ci.org/repo/' + u +
-      '%2Fmicroservices-demo/builds?limit=5';
+      '%2Fdevops-demp-app/builds?limit=5';
     return fetch(url, { headers: { 'Travis-API-Version': '3' } })
       .then(function(a) {
         return a.json();
@@ -106,7 +106,7 @@ class App extends Component {
   hasFixedBuild(u) {
     const url =
       'https://api.travis-ci.org/repo/' + u +
-      '%2Fmicroservices-demo/builds?limit=5';
+      '%2Fdevops-demo-app/builds?limit=5';
     return fetch(url, { headers: { 'Travis-API-Version': '3' } })
       .then(function(a) {
         return a.json();
@@ -124,7 +124,7 @@ class App extends Component {
 
   hasAddedTravis(u) {
     const url =
-      'https://api.github.com/repos/'+u+'/microservices-demo/contents/'
+      'https://api.github.com/repos/'+u+'/devops-demo-app/contents/'
     return fetch(url)
       .then(function(a) {
         return a.json();
