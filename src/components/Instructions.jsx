@@ -11,7 +11,7 @@ const instructionText = [
     <br />
   </div>,
   <div>
-    Fork <a target="_blank" rel="noopener noreferrer" href="https://github.com/liatrio/microservices-demo#fork-destination-box">liatrio/microservices-demo</a> on GitHub.
+    Fork <a target="_blank" rel="noopener noreferrer" href="https://github.com/TreasonableShorebirds/devops-demo-app#fork-destination-box">TreasonableShorebirds/devops-demo-app</a> on GitHub.
     <br />
     <br />
     Click the button below when done.

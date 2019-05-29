@@ -141,7 +141,7 @@ class App extends Component {
 
   hasForked(u) {
     const url =
-      'https://api.github.com/repos/liatrio/microservices-demo/forks';
+      'https://api.github.com/repos/TreasonableShorebirds/devops-demo-app/forks';
     return fetch(url)
       .then(function(a) {
         return a.json();
