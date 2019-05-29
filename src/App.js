@@ -88,7 +88,7 @@ class App extends Component {
   hasEnabledTravis(u) {
     const url =
       'https://api.travis-ci.org/repo/' + u +
-      '%2Fdevops-demp-app/builds?limit=5';
+      '%2Fdevops-demo-app/builds?limit=5';
     return fetch(url, { headers: { 'Travis-API-Version': '3' } })
       .then(function(a) {
         return a.json();

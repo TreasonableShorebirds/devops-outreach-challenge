@@ -26,7 +26,7 @@ const instructionText = [
 				services:<br />
 				- docker<br />
 				script:<br />
-					- docker build -t chico .<br />
+					- docker-compose build <br />
       </code>
     </Segment>
     Click the button below when done.
