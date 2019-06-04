@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
+import md5 from 'md5';
 
 const instructionText = [
   <div>
@@ -87,7 +88,8 @@ class Instructions extends Component {
       username: '',
       url: '',
       invalid: true,
-      notUser: false
+      notUser: false,
+      initialKey: "HelloWorld"
     }
     this.renderForm = this.renderForm.bind(this);
     this.renderUrlForm = this.renderUrlForm.bind(this);
@@ -138,7 +140,13 @@ class Instructions extends Component {
   }
 
   checkUrl(u) {
-    if ((u === 'holy') || (u === 'Holy')) {
+    let ans = this.state.initialKey;
+    ans = ans.reverse();
+    for(let i = 0; i < 5; i++)
+    {
+      ans = md5(ans);
+    }
+    if ((u === ans)) {
       return true;
     }
     else {
