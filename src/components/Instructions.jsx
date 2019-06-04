@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
+import md5 from 'md5';
+
 
 const instructionText = [
   <div>
@@ -74,8 +76,7 @@ const instructionText = [
     After the app has finishing deploying, you should be able to click a blue port 80 link to see it running.
     <br />
     <br />
-        Press the button to get the secret!
-    <br />
+       Enter this string into the demo app to get the code: 
     <br />
   </div>
 ];
@@ -87,8 +88,12 @@ class Instructions extends Component {
       username: '',
       url: '',
       invalid: true,
-      notUser: false
+      notUser: false,
+      initialKey: '' 
     }
+
+    this.state.initialKey =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
     this.renderForm = this.renderForm.bind(this);
     this.renderUrlForm = this.renderUrlForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -138,7 +143,13 @@ class Instructions extends Component {
   }
 
   checkUrl(u) {
-    if ((u === 'holy') || (u === 'Holy')) {
+    let ans = this.state.initialKey;
+    ans = ans.split('').reverse().join('');
+    for(let i = 0; i < 5; i++)
+    {
+      ans = md5(ans);
+    }
+    if ((u === ans)) {
       return true;
     }
     else {
@@ -221,6 +232,11 @@ class Instructions extends Component {
     return (
       <Segment>
         { instructionText[ this.getActiveIndex() ] }
+	{ this.getActiveIndex() === 5 ?
+	  <div>
+	  {this.state.initialKey}
+	  <br /> <br /> </div>: null
+	}
         { this.getActiveIndex() === 5 ?
           this.renderUrlForm() : null }
         { this.getActiveIndex() === 0 ?
