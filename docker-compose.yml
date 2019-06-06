@@ -6,6 +6,13 @@ services:
     build: ./react
     ports:
       - "3000:3000"
+  db:
+    container_name: mongodb
+    image: mongo:latest
+    volumes:
+      - ./mongodb/dbdata:/data/db
+    ports:
+      - "27017:27017"
     
 #  crowd:
 #  #    container_name: crowd5
