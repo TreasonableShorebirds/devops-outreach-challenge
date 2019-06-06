@@ -7,7 +7,7 @@
     "react": "^16.2.0",
     "react-confetti-canvas": "^1.0.1",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.0.17",
+    "react-scripts": "^3.0.1",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.1"
   },
@@ -17,11 +17,17 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "devDependencies": {
-    "eslint": "^4.15.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.5.1"
+  "devDependencies": {},
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
