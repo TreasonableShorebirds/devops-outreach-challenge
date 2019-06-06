@@ -13,6 +13,16 @@ services:
       - ./mongodb/dbdata:/data/db
     ports:
       - "27017:27017"
+
+  node:
+    container_name: node
+    build: ./node
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./node:/app
+    depends_on:
+      - db
     
 #  crowd:
 #  #    container_name: crowd5
