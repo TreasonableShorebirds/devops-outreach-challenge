@@ -1,0 +1,49 @@
+version: '3' 
+
+services:
+  react:
+    container_name: react
+    build: ./react
+    ports:
+      - "3000:3000"
+    
+#  crowd:
+#  #    container_name: crowd5
+#  #    build: ./crowd
+#  ###    command: tail -F anything
+#  #    ports:
+#  #      - "8095:8095"
+#
+#    artifactory:
+#        container_name: artifactory5
+#            build: ./artifactory
+#                ports:
+#                    - "8081:8081"
+#
+#                      jenkins:
+#                          container_name: jenkins5
+#                              build: ./jenkins
+#                                  volumes:
+#                                      - ./.jenkins:/root/.jenkins
+#                                          - ./.m2:/root/.m2/
+#                                              - ./.ssh:/root/.ssh/
+#                                                  ports:
+#                                                        - "8082:8082"
+#                                                              - "53801:53801"
+#
+#                                                              #  nexus:
+#                                                              #    container_name: nexus5 
+#                                                              #    build: ./nexus
+#                                                              #    expose:
+#                                                              #     - "8081"
+#                                                              #    ports:
+#                                                              #      - "8081:8081"
+
+
+                                                              #
+                                                              #  slave1:
+                                                              #    container_name: slaveone
+                                                              #    build: ./JenkinsMS/test2
+                                                              #    expose:
+                                                              #      - "22"
+
