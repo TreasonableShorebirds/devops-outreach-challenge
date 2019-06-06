@@ -19,8 +19,6 @@ services:
     build: ./node
     ports:
       - "3001:3001"
-    volumes:
-      - ./node:/app
     depends_on:
       - db
     
