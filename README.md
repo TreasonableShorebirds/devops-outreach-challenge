@@ -1,5 +1,5 @@
 This is an application built for a Chico State Tech Talk that is meant to give an introduction to some DevOps-related concepts.
 
-To run the site locally use `yarn install` and `yarn start`.
+To run the site locally use `docker-compose up`.
 
-![Preview](img/devops-challenge.png)
+![Preview](react/img/devops-challenge.png)
