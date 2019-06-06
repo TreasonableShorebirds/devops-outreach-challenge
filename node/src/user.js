@@ -5,7 +5,7 @@ let userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    password: {
+    secretKey: {
         type: String,
         required: false
     }
