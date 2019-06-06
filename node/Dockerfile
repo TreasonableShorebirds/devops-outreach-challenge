@@ -15,5 +15,5 @@ RUN npm install --silent
 #RUN npm install express mongoose mongodb -g --silent
 
 # start app
-ENTRYPOINT ["tail","-f", "/dev/null"]
-#ENTRYPOINT ["npm", "start"]
+#ENTRYPOINT ["tail","-f", "/dev/null"]
+ENTRYPOINT ["npm", "start"]

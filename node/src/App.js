@@ -5,14 +5,22 @@ const port = 3001
 
 const User = require('./user');
 
-mongoose.connect('mongodb://mongodb/outreach', {reconnectTries: Number.MAX_VALUE})
+const connectWithRetry = function() {
+  return mongoose.connect("mongodb://mongodb/outreach", function(err) {
+    if (err) {
+      console.error('Failed to connect to mongo on startup - retrying in 5 sec', err);
+      setTimeout(connectWithRetry, 5000);
+    }
+  });
+};
+connectWithRetry();
 
 let db = mongoose.connection
 
 db.once('open', function() {
     console.log('Server connected')
 }).catch((err) => {
-	console.log(err)	
+	console.log("Server failed to connect")	
 })
 
 app.get('/', (req, res) => {
