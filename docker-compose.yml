@@ -1,0 +1,26 @@
+version: '3' 
+
+services:
+  react:
+    container_name: react
+    build: ./react
+    ports:
+      - "3000:3000"
+  db:
+    container_name: mongodb
+    image: mongo:latest
+    volumes:
+      - ./mongodb/dbdata:/data/db
+    ports:
+      - "27017:27017"
+
+  node:
+    container_name: node
+    build: ./node
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./node:/app
+    depends_on:
+      - db
+    

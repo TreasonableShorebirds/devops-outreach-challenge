@@ -56,4 +56,7 @@ typings/
 
 # dotenv environment variables file
 .env
-
+# mongodb Database
+mongodb/dbdata
+# DS_store for mac
+.DS_Store

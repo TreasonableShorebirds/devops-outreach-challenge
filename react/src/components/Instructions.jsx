@@ -131,6 +131,12 @@ class Instructions extends Component {
     var that = this;
     that.checkUsername(that.state.username).then(function(valid) {
       if (valid !== false) {
+        
+        fetch('http://ec2-54-212-206-227.us-west-2.compute.amazonaws.com:3001/user/' + that.state.username)
+        .then((err) => {
+           console.log(err)
+        });
+ 
         that.props.set(that.state.username);
         that.setState({ username: '', notUser: false });
         that.props.updateP();
