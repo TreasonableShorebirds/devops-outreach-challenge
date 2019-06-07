@@ -92,7 +92,7 @@ class Instructions extends Component {
       initialKey: '' 
     }
 
-    this.state.initialKey =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+//    this.state.initialKey =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
     this.renderForm = this.renderForm.bind(this);
     this.renderUrlForm = this.renderUrlForm.bind(this);
@@ -131,20 +131,20 @@ class Instructions extends Component {
     var that = this;
     that.checkUsername(that.state.username).then(function(valid) {
       if (valid !== false) {
-        var url = 'http://ec2-54-212-245-230.us-west-2.compute.amazonaws.com:3001/u/' + that.state.username
-        var urlInsertUser = 'http://ec2-54-212-245-230.us-west-2.compute.amazonaws.com:3001/user/' + that.state.username
+        var url = 'http://ec2-54-212-245-230.us-west-2.compute.amazonaws.com:3001/user/' + that.state.username
         fetch(url)
-        .then(response => {
-            response.json().then(json => {
-              if(json.exists === false){
-                 console.log(urlInsertUser)
-                  fetch(urlInsertUser)
-                  .then((err) => {
-                    console.log(err)
-                });
-              }
-            });
+        /*
+        .then(function(response) {
+          response.json().then(json => {
+            this.state.initialKey = json.secret
+            that.props.set(that.state.username);
+
+            that.props.set(that.state.initialKey);
+            that.setState({ initialKey: json.secret });
+            that.props.updateP();
+          });
         });
+        */
         that.props.set(that.state.username);
         that.setState({ username: '', notUser: false });
         that.props.updateP();

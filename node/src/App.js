@@ -1,10 +1,20 @@
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
-const cors = require('cors')
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const md5 = require('md5');
 const port = 3001
 
 const User = require('./user');
+const app = express();
+
+function encrypt(key) {
+    key = key.split('').reverse().join('');
+    for(let i = 0; i < 5; i++)
+    {
+      key = md5(key);
+    }
+    return key;
+}
 
 const connectWithRetry = function() {
   return mongoose.connect("mongodb://mongodb/outreach", function(err) {
@@ -36,23 +46,21 @@ app.get('/', (req, res) => {
 
 app.get('/user/:user', (req, res) => {
     const name = req.params.user
-    console.log(name)
-    const newUser = new User()
-    newUser.githubUsername = name
-    newUser.save()
-    res.send('Added a new user')
-})
-
-app.get('/u/:user', (req, res) => {
-    const name = req.params.user
     User.find({ githubUsername: name }, function(err, data) {
       if(data.length > 0) {
-        console.log(data[0].githubUsername);
-        res.json({ exists: true });
+        console.log('User already exists');
+        res.send('User already exists');
       }
       else {
-        console.log("empty");
-        res.json({ exists: false });
+        const key = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const encryptedKey = encrypt(key);
+        console.log('Adding new user');
+        const newUser = new User();
+        newUser.githubUsername = name;
+        newUser.secretKey = key;
+        newUser.encryptedKey = encryptedKey;
+        newUser.save();
+        res.json({ secret: key });
       }
     });
 })
@@ -65,11 +73,16 @@ app.get('/delete', (req, res) => {
     res.send('Removed Everything');
 })
 
-app.get('/secret/:user', (req, res) => {
+app.get('/secret/:user/:key', (req, res) => {
     User.findOne({ githubUsername: req.params.user }, function(err, data) {
       console.log(data);
       res.json({ secret: data.secretKey });
     })
 })
+
+app.get('/encrypt/:key', (req, res) => {
+    const key = req.param.user
+
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
