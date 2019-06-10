@@ -1,7 +1,7 @@
 {
-  "name": "node",
-  "version": "1.0.0",
-  "description": "",
+  "name": "devops-challenge-backend",
+  "version": "0.1.0",
+  "description": "REST Backend for devops challenge",
   "main": "App.js",
   "scripts": {
     "start": "node src/App.js",
