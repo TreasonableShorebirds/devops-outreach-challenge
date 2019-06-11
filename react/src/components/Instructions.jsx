@@ -5,6 +5,9 @@ var ec2 = 'http://ec2-34-211-208-118.us-west-2.compute.amazonaws.com:3001/'
 
 const instructionText = [
   <div>
+    GitHub is a hosting service for use with the version control system git. It's common to use version control systems like git to manage changes to your code, and services like GitHub make sharing those changes easy.
+    <br />
+    <br />
     Create a <a target="_blank" rel="noopener noreferrer" href="https://github.com/join">GitHub</a> account if you don't already have one.
     <br />
     <br />
@@ -13,7 +16,10 @@ const instructionText = [
     <br />
   </div>,
   <div>
-    Fork <a target="_blank" rel="noopener noreferrer" href="https://github.com/TreasonableShorebirds/devops-demo-app#fork-destination-box">TreasonableShorebirds/devops-demo-app</a> on GitHub.
+    GitHub uses a concept of 'forking' when someone wants to make their own version of someone else's project. We've created a demo application, to show off some automated pipeline tools, and to test your debugging skills. You can take the project we've created, and make your own copy where you can fix the bugs.
+    <br />
+    <br />
+    Fork <a target="_blank" rel="noopener noreferrer" href="https://github.com/liatrio/apprentice-outreach-demo-application">liatrio/apprentice-outreach-demo-application</a> on GitHub.
     <br />
     <br />
     Click the button below when done.
@@ -21,22 +27,35 @@ const instructionText = [
     <br />
   </div>,
   <div>
+    Travis CI is a continous integration service which helps automate building and testing of projects.
+    DevOps and continous integration go hand in hand, helping to ease the process of delivering code.
+    Travis CI integrates with GitHub, and can be congigured directly from your project.
+    <br />
+    <br />
     Add the following Travis CI configuration as a new file called <code>.travis.yml</code> to your fork.
     <Segment color='green'>
-      <code>
-				sudo: required<br />
-				services:<br />
-				- docker<br />
-				script:<br />
-					- docker-compose build <br />
-      </code>
+      <pre>{`language: node_js
+node_js:
+  - "10"
+services:
+  - docker
+before_install:
+  - ./install_compose.sh
+script:
+  - export REACT_APP_DOMAIN=backend-demo-app
+  - docker-compose pull
+  - docker-compose build
+  - docker-compose start
+  - docker ps
+  - docker-compose exec frontend sh -c "npm test"`}</pre>
     </Segment>
     Click the button below when done.
     <br />
     <br />
   </div>,
   <div>
-    On <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">travis-ci.org</a>, enable your fork of microservices-demo so that it will build.
+    Travis CI will only automatically run on repositories when you tell it to.
+    On <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">travis-ci.org</a>, enable your fork of demo-application so that it will build.
     <br />
     <br />
     Trigger a build using the Travis CI web console.
@@ -50,33 +69,41 @@ const instructionText = [
     The build failed! Fix the build by examining the cause of failure in the build logs on <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">travis-ci.org</a>.
     <br />
     <br />
-    Click the button below after the latest build has passed.
+    To debug the project, you'll probably want to run your own version. This demo application runs in Docker, which is
+    a containerization tool, letting you set up unique enviornments for projects to run inside of. For this debugging you
+    can install Docker locally, or use
+    <a target="_blank" rel="noopener noreferrer" href="https://labs.play-with-docker.com/">Play with Docker</a>.
+    If you use Play with Docker, make sure to also create a Doocker Hub account at
+    <br />
+    <br />
+    This application is a simple demo, with a React frontend and a Django backend, networked with Docker.
+    There are several bugs in the application, both in the Docker configuration, and the frontend application, but none in
+    the backend application.
+    <br />
+    <br />
+    You can run the application with:
+    <Segment color='green'>
+      <pre>{`$ git clone https://github.com/YOUR_USERNAME/devops-demo-app
+$ cd devops-demo-app
+$ docker-compose up`}</pre>
+    </Segment>
+    By default, the application will run on port 3000 of localhost. Visiting that page might help with debugging.
+    Use the results of Travis CI and your own skills to debug the application. Once you've made changes to the project,
+    you can push them to GitHub to have Travis CI rebuild the project. It's fine if it takes you multiple tries to find
+    all of the bugs.
+    <br />
+    <br />
+    Once you've found all the bugs and your latest build has passed, click the button bellow to continue.
     <br />
     <br />
   </div>,
   <div>
-    Log in to <a target="_blank" rel="noopener noreferrer" href="https://labs.play-with-docker.com/">Play with Docker</a>.
+    Now that you've debugged the application you'll be able to use it to get your code. Open up a browser with the
+    application running, and input your randomly generated code. If the applicaton has been fully debugged, you'll
+    get back your key, showing that you've finished.
     <br />
     <br />
-    You will need a Docker Hub account to use Play with Docker. You can create an account at <a target="_blank" rel="noopener noreferrer" href="https://hub.docker.com/">hub.docker.com</a>.
-    <br />
-    <br />
-    Once you are logged in on Play with Docker, hit the start button. On the left, select Add New Instance. This will create a Docker playground for you to run commands in.
-    <br />
-    <br />
-    Run devops-demo-app!
-    <br />
-    <Segment color='green'>
-      <code>
-		  $ git clone https://github.com/YOUR_USERNAME/devops-demo-app <br />
-		  $ cd devops-demo-app<br />
-		  $ docker-compose up
-      </code>
-    </Segment>
-    After the app has finishing deploying, you should be able to click a blue port 80 link to see it running.
-    <br />
-    <br />
-       Enter this string into the demo app to get the code: 
+    Random Code:
     <br />
   </div>
 ];
