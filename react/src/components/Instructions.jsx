@@ -92,8 +92,6 @@ class Instructions extends Component {
       initialKey: '' 
     }
 
-//    this.state.initialKey =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
     this.renderForm = this.renderForm.bind(this);
     this.renderUrlForm = this.renderUrlForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -102,8 +100,6 @@ class Instructions extends Component {
     this.checkUsername = this.checkUsername.bind(this);
     this.checkUrl = this.checkUrl.bind(this);
     this.renderUpdater = this.renderUpdater.bind(this);
-//    this.getKey= this.getKey.bind(this);
-//    this.returnKey= this.returnKey.bind(this);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -131,27 +127,22 @@ class Instructions extends Component {
 
   handleSubmit(event) {
     var that = this;
-    alert(this.state.username)
     that.checkUsername(that.state.username).then(function(valid) {
       if (valid !== false) {
         var url = ec2 + 'user/' + that.state.username
         fetch(url)
         .then(function(response) {
-        console.log(response)
           response.json().then(json => {
             that.state.initialKey = json.secret
             that.props.setkey(json.secret)
-            console.log(that.props.key)
           });
         });
 
         that.props.set(that.state.username);
         that.setState({ notUser: false });
-//        that.setState({ username: '', notUser: false });
         that.props.updateP();
       }
       else {
-//        that.setState({ username: '', notUser: true });
         that.setState({  notUser: true });
       }
     });
@@ -161,12 +152,10 @@ class Instructions extends Component {
   checkUrl(u) {
     var that = this;
     var url = ec2 + 'secret/' + that.props.user + '/' + u 
-    console.log(url)
     return new Promise((resolve, reject) => {
     fetch(url)
     .then(function(response) {
       response.json().then(json => {
-        console.log(json)
         if ((json.correct === true)) {
           resolve(true)
         }
@@ -178,27 +167,6 @@ class Instructions extends Component {
     })
   }
   
-  /*
-  getKey() {
-    var that = this;
-    var url = ec2 + 'user/' + that.state.username
-    return new Promise((resolve, reject) => {
-    fetch(url)
-    .then(function(response) {
-      console.log(response)
-      response.json().then(json => {
-        resolve(json.secret);
-      });
-    });
-
-    })
-  }
-
-  returnKey() {
-    
-  }
-  */
-
   handleUrlSubmit(event) {
   this.checkUrl(this.state.url).then(response => {
     if(response){
@@ -278,7 +246,7 @@ class Instructions extends Component {
         { instructionText[ this.getActiveIndex() ] }
 	{ this.getActiveIndex() === 5 ?
 	  <div>
-	  { this.props.key }
+	  { this.props.mykey }
 	  <br /> <br /> </div>: null
 	}
         { this.getActiveIndex() === 5 ?

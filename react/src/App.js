@@ -288,7 +288,7 @@ class App extends Component {
                     updateP={ this.updateProgress }
                     done={ this.completeAll }
                     user={ this.state.user }
-                    key={ this.state.key }
+                    mykey ={ this.state.key }
                   /> }
               </Grid.Column>
             </Grid.Row>
