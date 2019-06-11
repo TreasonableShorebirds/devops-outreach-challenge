@@ -14,12 +14,15 @@ class App extends Component {
     super();
     let localUser;
     let localDone;
+    let localKey;
     if (window.localStorage) {
       localUser = JSON.parse(localStorage.getItem('USER'));
+      localKey = JSON.parse(localStorage.getItem('KEY'));
       localDone = JSON.parse(localStorage.getItem('DONE'));
     }
     this.state = {
       user: localUser || '',
+      key: localKey || '',
       done: localDone || '',
       active: [ true, false, false, false, false, false ],
       completed: [ false, false, false, false, false, false ]
@@ -38,6 +41,8 @@ class App extends Component {
     this.clearUser = this.clearUser.bind(this);
     this.completedAll = this.completedAll.bind(this);
     this.completeAll = this.completeAll.bind(this);
+    this.setKey = this.setKey.bind(this);
+    this.saveKey = this.saveKey.bind(this);
   }
 
   completeAll() {
@@ -48,6 +53,11 @@ class App extends Component {
   setUser(u) {
     this.setState({ user: u });
     this.save(u);
+  }
+
+  setKey(k) {
+    this.setState({ key: k });
+    this.saveKey(k);
   }
 
   clearUser() {
@@ -61,6 +71,11 @@ class App extends Component {
   save(u) {
     if (!u) return;
     localStorage.setItem('USER', JSON.stringify(u));
+  }
+
+  saveKey(k) {
+    if (!k) return;
+    localStorage.setItem('KEY', JSON.stringify(k));
   }
 
   prevStep() {
@@ -269,8 +284,11 @@ class App extends Component {
                   <Instructions
                     activeStep={ this.state.active }
                     set={ this.setUser }
+                    setkey ={ this.setKey }
                     updateP={ this.updateProgress }
                     done={ this.completeAll }
+                    user={ this.state.user }
+                    mykey ={ this.state.key }
                   /> }
               </Grid.Column>
             </Grid.Row>

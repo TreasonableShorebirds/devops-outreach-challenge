@@ -1,9 +1,12 @@
+##Remember to remove volumes
 version: '3' 
 
 services:
   react:
     container_name: react
     build: ./react
+    volumes:
+    - ./react/src:/app/src
     ports:
       - "3000:3000"
   db:
@@ -19,6 +22,8 @@ services:
     build: ./node
     ports:
       - "3001:3001"
+    volumes:
+      - ./node/src:/app/src
     depends_on:
       - db
     
