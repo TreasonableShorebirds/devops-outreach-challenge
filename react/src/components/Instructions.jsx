@@ -34,27 +34,20 @@ const instructionText = [
     <br />
     Add the following Travis CI configuration as a new file called <code>.travis.yml</code> to your fork.
     <Segment color='green'>
-      <pre>
-        language: node_js <br />
-        node_js: <br />
-          - "10" <br />
-        env: <br />
-          - DOCKER_COMPOSE_VERSION=1.23.2 <br />
-        services: <br />
-          - docker <br />
-        before_install: <br />
-          - sudo rm /usr/local/bin/docker-compose <br />
-          - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose <br />
-          - chmod +x docker-compose <br />
-          - sudo mv docker-compose /usr/local/bin <br />
-        script: <br />
-          - export REACT_APP_DOMAIN=backend-demo-app <br />
-          - docker-compose pull <br />
-          - docker-compose build <br />
-          - docker-compose start <br />
-          - docker ps <br />
-          - docker-compose exec frontend sh -c "npm test" <br />
-      </pre>
+      <pre>{`language: node_js
+node_js:
+  - "10"
+services:
+  - docker
+before_install:
+  - ./install_compose.sh
+script:
+  - export REACT_APP_DOMAIN=backend-demo-app
+  - docker-compose pull
+  - docker-compose build
+  - docker-compose start
+  - docker ps
+  - docker-compose exec frontend sh -c "npm test"`}</pre>
     </Segment>
     Click the button below when done.
     <br />
@@ -90,11 +83,9 @@ const instructionText = [
     <br />
     You can run the application with:
     <Segment color='green'>
-      <code>
-      $ git clone https://github.com/YOUR_USERNAME/devops-demo-app <br />
-      $ cd devops-demo-app<br />
-      $ docker-compose up
-      </code>
+      <pre>{`$ git clone https://github.com/YOUR_USERNAME/devops-demo-app
+$ cd devops-demo-app
+$ docker-compose up`}</pre>
     </Segment>
     By default, the application will run on port 3000 of localhost. Visiting that page might help with debugging.
     Use the results of Travis CI and your own skills to debug the application. Once you've made changes to the project,
