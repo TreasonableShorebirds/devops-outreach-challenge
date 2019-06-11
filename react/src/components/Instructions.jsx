@@ -102,6 +102,8 @@ class Instructions extends Component {
     this.checkUsername = this.checkUsername.bind(this);
     this.checkUrl = this.checkUrl.bind(this);
     this.renderUpdater = this.renderUpdater.bind(this);
+//    this.getKey= this.getKey.bind(this);
+//    this.returnKey= this.returnKey.bind(this);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -138,6 +140,8 @@ class Instructions extends Component {
         console.log(response)
           response.json().then(json => {
             that.state.initialKey = json.secret
+            that.props.setkey(json.secret)
+            console.log(that.props.key)
           });
         });
 
@@ -156,7 +160,8 @@ class Instructions extends Component {
 
   checkUrl(u) {
     var that = this;
-    var url = ec2 + 'secret/' + that.state.username + '/' + u 
+    var url = ec2 + 'secret/' + that.props.user + '/' + u 
+    console.log(url)
     return new Promise((resolve, reject) => {
     fetch(url)
     .then(function(response) {
@@ -172,6 +177,27 @@ class Instructions extends Component {
       })
     })
   }
+  
+  /*
+  getKey() {
+    var that = this;
+    var url = ec2 + 'user/' + that.state.username
+    return new Promise((resolve, reject) => {
+    fetch(url)
+    .then(function(response) {
+      console.log(response)
+      response.json().then(json => {
+        resolve(json.secret);
+      });
+    });
+
+    })
+  }
+
+  returnKey() {
+    
+  }
+  */
 
   handleUrlSubmit(event) {
   this.checkUrl(this.state.url).then(response => {
@@ -252,7 +278,7 @@ class Instructions extends Component {
         { instructionText[ this.getActiveIndex() ] }
 	{ this.getActiveIndex() === 5 ?
 	  <div>
-	  {this.state.initialKey}
+	  { this.props.key }
 	  <br /> <br /> </div>: null
 	}
         { this.getActiveIndex() === 5 ?
