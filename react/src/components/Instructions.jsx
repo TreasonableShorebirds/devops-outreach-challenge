@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
-import md5 from 'md5';
 
+var ec2 = 'http://ec2-34-211-208-118.us-west-2.compute.amazonaws.com:3001/'
 
 const instructionText = [
   <div>
@@ -132,7 +132,7 @@ class Instructions extends Component {
     alert(this.state.username)
     that.checkUsername(that.state.username).then(function(valid) {
       if (valid !== false) {
-        var url = 'http://ec2-34-217-114-163.us-west-2.compute.amazonaws.com:3001/user/' + that.state.username
+        var url = ec2 + 'user/' + that.state.username
         fetch(url)
         .then(function(response) {
         console.log(response)
@@ -142,13 +142,13 @@ class Instructions extends Component {
         });
 
         that.props.set(that.state.username);
-//        that.setState({ username: that.state.username, notUser: false });
-        that.setState({ username: '', notUser: false });
+        that.setState({ notUser: false });
+//        that.setState({ username: '', notUser: false });
         that.props.updateP();
       }
       else {
-        that.setState({ username: '', notUser: true });
-//        that.setState({ username: that.state.username, notUser: true });
+//        that.setState({ username: '', notUser: true });
+        that.setState({  notUser: true });
       }
     });
     event.preventDefault();
@@ -156,48 +156,35 @@ class Instructions extends Component {
 
   checkUrl(u) {
     var that = this;
-    alert(that.state.username)
-    var url = 'http://ec2-34-217-114-163.us-west-2.compute.amazonaws.com:3001/secret/' + that.state.username + '/' + u 
-    console.log(url)
+    var url = ec2 + 'secret/' + that.state.username + '/' + u 
+    return new Promise((resolve, reject) => {
     fetch(url)
     .then(function(response) {
       response.json().then(json => {
         console.log(json)
-        if ((json.correct === 'true')) {
-          return true;
+        if ((json.correct === true)) {
+          resolve(true)
         }
         else {
-          return false;
+          resolve(false)
         }
       })
       })
-
-    /*
-    let ans = this.state.initialKey;
-    ans = ans.split('').reverse().join('');
-    for(let i = 0; i < 5; i++)
-    {
-      ans = md5(ans);
-    }
-    if ((u === ans)) {
-      return true;
-    }
-    else {
-      return false;
-    }
-    */
+    })
   }
 
   handleUrlSubmit(event) {
-    if (this.checkUrl(this.state.url)) {
+  this.checkUrl(this.state.url).then(response => {
+    if(response){
       this.props.done();
       this.setState({ url: '' });
       this.props.updateP();
     }
-    else {
+    else{
       this.setState({ url: '' });
     }
     event.preventDefault();
+  })
   }
 
   renderForm() {
