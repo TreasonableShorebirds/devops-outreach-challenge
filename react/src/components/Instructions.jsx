@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
 
 var ec2 = 'http://ec2-34-211-208-118.us-west-2.compute.amazonaws.com:3001/'
+//var ec2 = 'http://localhost:3001/'
 
 const instructionText = [
   <div>

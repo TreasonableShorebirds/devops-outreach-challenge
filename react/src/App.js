@@ -61,9 +61,10 @@ class App extends Component {
   }
 
   clearUser() {
-    this.setState({ user: '', done: '' });
+    this.setState({ user: '', done: '', key: '' });
     localStorage.removeItem('USER');
     localStorage.removeItem('DONE');
+    localStorage.removeItem('KEY');
     this.setRemainingToFalse(0);
     this.updateActive(this.state.completed.indexOf(false));
   }
@@ -279,7 +280,8 @@ class App extends Component {
               <Grid.Column width={11}>
                 { this.completedAll() ?
                   <Segment color='green'>
-                    Congratulations, you have completed the DevOps Challenge!
+                    Congratulations, you have completed the DevOps Challenge! <br />
+		    <a target="_blank" rel="noopener noreferrer" href="http://tinyurl.com/liatrio">Link to form</a>
                   </Segment> :
                   <Instructions
                     activeStep={ this.state.active }
