@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
 import md5 from 'md5';
 
+import Markdown from 'react-remarkable';
+
+import FirstInstruct from './FirstInstruct.md';
 
 const instructionText = [
   <div>
@@ -34,20 +37,6 @@ const instructionText = [
     <br />
     Add the following Travis CI configuration as a new file called <code>.travis.yml</code> to your fork.
     <Segment color='green'>
-      <pre>{`language: node_js
-node_js:
-  - "10"
-services:
-  - docker
-before_install:
-  - ./install_compose.sh
-script:
-  - export REACT_APP_DOMAIN=backend-demo-app
-  - docker-compose pull
-  - docker-compose build
-  - docker-compose start
-  - docker ps
-  - docker-compose exec frontend sh -c "npm test"`}</pre>
     </Segment>
     Click the button below when done.
     <br />
@@ -116,7 +105,8 @@ class Instructions extends Component {
       url: '',
       invalid: true,
       notUser: false,
-      initialKey: '' 
+      initialKey: '',
+      firstInstruction: null
     }
 
     this.state.initialKey =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -129,6 +119,10 @@ class Instructions extends Component {
     this.checkUsername = this.checkUsername.bind(this);
     this.checkUrl = this.checkUrl.bind(this);
     this.renderUpdater = this.renderUpdater.bind(this);
+  }
+
+  componentWillMount() {
+    fetch(FirstInstruct).then(res => res.text()).then(text => this.setState({ firstInstruction: text}));
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -158,12 +152,12 @@ class Instructions extends Component {
     var that = this;
     that.checkUsername(that.state.username).then(function(valid) {
       if (valid !== false) {
-        
+
         fetch('http://ec2-54-212-206-227.us-west-2.compute.amazonaws.com:3001/user/' + that.state.username)
         .then((err) => {
            console.log(err)
         });
- 
+
         that.props.set(that.state.username);
         that.setState({ username: '', notUser: false });
         that.props.updateP();
@@ -232,7 +226,7 @@ class Instructions extends Component {
             label='Secret Word'
             name='url'
             value={ this.state.url }
-            onChange={ this.handleChange } 
+            onChange={ this.handleChange }
           />
         </Form.Group>
         <Form.Button
@@ -262,8 +256,11 @@ class Instructions extends Component {
   }
 
   render() {
+    const mrkdown = this.state.firstInstruction;
     return (
+      <>
       <Segment>
+      <Markdown source={mrkdown} />
         { instructionText[ this.getActiveIndex() ] }
 	{ this.getActiveIndex() === 5 ?
 	  <div>
@@ -282,6 +279,7 @@ class Instructions extends Component {
            (this.getActiveIndex() !== 5)) ?
           this.renderUpdater() : null }
       </Segment>
+      </>
     );
   }
 }
