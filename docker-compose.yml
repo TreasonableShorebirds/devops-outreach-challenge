@@ -6,7 +6,7 @@ services:
     container_name: react
     build: ./react
     volumes:
-    - ./react:/app
+    - ./react/src:/app/src
     ports:
       - "3000:3000"
   db:
@@ -23,7 +23,7 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - ./node:/app
+      - ./node/src:/app/src
     depends_on:
       - db
     

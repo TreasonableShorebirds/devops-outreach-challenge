@@ -129,34 +129,50 @@ class Instructions extends Component {
 
   handleSubmit(event) {
     var that = this;
+    alert(this.state.username)
     that.checkUsername(that.state.username).then(function(valid) {
       if (valid !== false) {
-        var url = 'http://ec2-54-212-245-230.us-west-2.compute.amazonaws.com:3001/user/' + that.state.username
+        var url = 'http://ec2-34-217-114-163.us-west-2.compute.amazonaws.com:3001/user/' + that.state.username
         fetch(url)
-        /*
         .then(function(response) {
+        console.log(response)
           response.json().then(json => {
-            this.state.initialKey = json.secret
-            that.props.set(that.state.username);
-
-            that.props.set(that.state.initialKey);
-            that.setState({ initialKey: json.secret });
-            that.props.updateP();
+            that.state.initialKey = json.secret
           });
         });
-        */
+
         that.props.set(that.state.username);
+//        that.setState({ username: that.state.username, notUser: false });
         that.setState({ username: '', notUser: false });
         that.props.updateP();
       }
       else {
         that.setState({ username: '', notUser: true });
+//        that.setState({ username: that.state.username, notUser: true });
       }
     });
     event.preventDefault();
   }
 
   checkUrl(u) {
+    var that = this;
+    alert(that.state.username)
+    var url = 'http://ec2-34-217-114-163.us-west-2.compute.amazonaws.com:3001/secret/' + that.state.username + '/' + u 
+    console.log(url)
+    fetch(url)
+    .then(function(response) {
+      response.json().then(json => {
+        console.log(json)
+        if ((json.correct === 'true')) {
+          return true;
+        }
+        else {
+          return false;
+        }
+      })
+      })
+
+    /*
     let ans = this.state.initialKey;
     ans = ans.split('').reverse().join('');
     for(let i = 0; i < 5; i++)
@@ -169,6 +185,7 @@ class Instructions extends Component {
     else {
       return false;
     }
+    */
   }
 
   handleUrlSubmit(event) {
