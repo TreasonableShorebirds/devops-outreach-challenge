@@ -4,15 +4,19 @@
   "description": "REST Backend for devops challenge",
   "main": "App.js",
   "scripts": {
-    "start": "node src/App.js",
+    "start": "nodemon src/App.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "curl": "^0.1.4",
     "express": "^4.17.1",
+    "md5": "^2.2.1",
     "mongodb": "^3.2.7",
-    "mongoose": "^5.5.13"
+    "mongoose": "^5.5.13",
+    "node-fetch": "^2.6.0",
+    "nodemon": "^1.19.1"
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
-import md5 from 'md5';
 
+var ec2 = 'http://ec2-34-211-208-118.us-west-2.compute.amazonaws.com:3001/'
 
 const instructionText = [
   <div>
@@ -119,8 +119,6 @@ class Instructions extends Component {
       initialKey: '' 
     }
 
-    this.state.initialKey =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
     this.renderForm = this.renderForm.bind(this);
     this.renderUrlForm = this.renderUrlForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -158,48 +156,56 @@ class Instructions extends Component {
     var that = this;
     that.checkUsername(that.state.username).then(function(valid) {
       if (valid !== false) {
-        
-        fetch('http://ec2-54-212-206-227.us-west-2.compute.amazonaws.com:3001/user/' + that.state.username)
-        .then((err) => {
-           console.log(err)
+        var url = ec2 + 'user/' + that.state.username
+        fetch(url)
+        .then(function(response) {
+          response.json().then(json => {
+            that.state.initialKey = json.secret
+            that.props.setkey(json.secret)
+          });
         });
- 
+
         that.props.set(that.state.username);
-        that.setState({ username: '', notUser: false });
+        that.setState({ notUser: false });
         that.props.updateP();
       }
       else {
-        that.setState({ username: '', notUser: true });
+        that.setState({  notUser: true });
       }
     });
     event.preventDefault();
   }
 
   checkUrl(u) {
-    let ans = this.state.initialKey;
-    ans = ans.split('').reverse().join('');
-    for(let i = 0; i < 5; i++)
-    {
-      ans = md5(ans);
-    }
-    if ((u === ans)) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    var that = this;
+    var url = ec2 + 'secret/' + that.props.user + '/' + u 
+    return new Promise((resolve, reject) => {
+    fetch(url)
+    .then(function(response) {
+      response.json().then(json => {
+        if ((json.correct === true)) {
+          resolve(true)
+        }
+        else {
+          resolve(false)
+        }
+      })
+      })
+    })
   }
-
+  
   handleUrlSubmit(event) {
-    if (this.checkUrl(this.state.url)) {
+  this.checkUrl(this.state.url).then(response => {
+    if(response){
       this.props.done();
       this.setState({ url: '' });
       this.props.updateP();
     }
-    else {
+    else{
       this.setState({ url: '' });
     }
     event.preventDefault();
+  })
   }
 
   renderForm() {
@@ -267,7 +273,7 @@ class Instructions extends Component {
         { instructionText[ this.getActiveIndex() ] }
 	{ this.getActiveIndex() === 5 ?
 	  <div>
-	  {this.state.initialKey}
+	  { this.props.mykey }
 	  <br /> <br /> </div>: null
 	}
         { this.getActiveIndex() === 5 ?

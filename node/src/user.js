@@ -8,6 +8,10 @@ let userSchema = mongoose.Schema({
     secretKey: {
         type: String,
         required: false
+    },
+    encryptedKey: {
+        type: String,
+        required: false
     }
 });
 
