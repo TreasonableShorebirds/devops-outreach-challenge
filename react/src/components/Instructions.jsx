@@ -101,11 +101,9 @@ $ docker-compose up`}</pre>
   </div>,
   <div>
     Now that you've debugged the application you'll be able to use it to get your code. Open up a browser with the
-    application running, and input your randomly generated code. If the applicaton has been fully debugged, you'll
+    application running, and input your randomly generated code. If the application has been fully debugged, you'll
     get back your key, showing that you've finished.
     <br />
-    <br />
-    Random Code:
     <br />
   </div>
 ];
@@ -122,7 +120,6 @@ class Instructions extends Component {
     }
 
     this.renderForm = this.renderForm.bind(this);
-    this.renderUrlForm = this.renderUrlForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeySubmit = this.handleKeySubmit.bind(this);
@@ -202,12 +199,20 @@ class Instructions extends Component {
     );
   }
 
-  renderUrlForm() {
+  renderKeyForm() {
     return (
+      <div>
+      <div>
+        Your Code:
+        <br />
+        <strong> { this.props.mykey } </strong>
+        <br />
+        <br />
+      </div>
       <Form onSubmit={ this.handleKeySubmit }>
         <Form.Group widths='equal'>
           <Form.Input
-            label='Secret Word'
+            label='Secret Key'
             name='url'
             value={ this.state.url }
             onChange={ this.handleChange } 
@@ -220,6 +225,7 @@ class Instructions extends Component {
           Submit
         </Form.Button>
       </Form>
+      </div>
     );
   }
 
@@ -243,13 +249,8 @@ class Instructions extends Component {
     return (
       <Segment>
         { instructionText[ this.getActiveIndex() ] }
-	{ this.getActiveIndex() === 5 ?
-	  <div>
-	  { this.props.mykey }
-	  <br /> <br /> </div>: null
-	}
         { this.getActiveIndex() === 5 ?
-          this.renderUrlForm() : null }
+          this.renderKeyForm() : null }
         { this.getActiveIndex() === 0 ?
           this.renderForm() : null }
         { this.state.notUser && (this.getActiveIndex() === 0) ?
