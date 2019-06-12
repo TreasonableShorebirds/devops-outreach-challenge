@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
 
-var ec2 = 'http://ec2-34-211-208-118.us-west-2.compute.amazonaws.com:3001/'
-//var ec2 = 'http://localhost:3001/'
+//var ec2 = 'http://ec2-34-211-208-118.us-west-2.compute.amazonaws.com:3001/'
+var ec2 = 'http://localhost:3001/'
 
 const instructionText = [
   <div>
@@ -196,6 +196,7 @@ class Instructions extends Component {
   }
   
   handleUrlSubmit(event) {
+  event.preventDefault();
   this.checkUrl(this.state.url).then(response => {
     if(response){
       this.props.done();
@@ -205,7 +206,6 @@ class Instructions extends Component {
     else{
       this.setState({ url: '' });
     }
-    event.preventDefault();
   })
   }
 
