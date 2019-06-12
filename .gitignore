@@ -63,4 +63,7 @@ mongodb/dbdata
 # Terraform 
 react/.terraform/
 react/terraform.tfstate
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
 
