@@ -118,16 +118,16 @@ class Instructions extends Component {
       url: '',
       invalid: true,
       notUser: false,
-      initialKey: '' 
+      initialKey: ''
     }
 
     this.renderForm = this.renderForm.bind(this);
     this.renderUrlForm = this.renderUrlForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleUrlSubmit = this.handleUrlSubmit.bind(this);
+    this.handleKeySubmit = this.handleKeySubmit.bind(this);
     this.checkUsername = this.checkUsername.bind(this);
-    this.checkUrl = this.checkUrl.bind(this);
+    this.checkKey = this.checkKey.bind(this);
     this.renderUpdater = this.renderUpdater.bind(this);
   }
 
@@ -139,75 +139,45 @@ class Instructions extends Component {
     this.setState({[event.target.name]: event.target.value});
   }
 
-  checkUsername(u) {
-    return fetch('https://api.github.com/users/' + u)
-      .then(function(a) {
-        return a.json();
-      })
-      .then(function(b) {
-        if (b.message === 'Not Found') {
-          return false;
-        }
-        else {
-          return b;
-        }
-      });
+  async checkUsername(u) {
+    const response = await fetch('https://api.github.com/users/' + u);
+    const data = await response.json();
+    return data.message === 'Not Found' ? false : data;
   }
 
-  handleSubmit(event) {
-    var that = this;
-    that.checkUsername(that.state.username).then(function(valid) {
-      if (valid !== false) {
-        var url = nodeUrl + 'user/' + that.state.username
-        fetch(url)
-        .then(function(response) {
-          response.json().then(json => {
-            that.state.initialKey = json.secret
-            that.props.setkey(json.secret)
-          });
-        });
-
-        that.props.set(that.state.username);
-        that.setState({ notUser: false });
-        that.props.updateP();
-      }
-      else {
-        that.setState({  notUser: true });
-      }
-    });
+  async handleSubmit(event) {
     event.preventDefault();
+    const valid = await this.checkUsername(this.state.username);
+    if(valid) {
+      const url = nodeUrl + 'user/' + this.state.username;
+      const response =  await fetch(url);
+      const data = await response.json();
+      this.props.setkey(data.secret);
+      this.props.set(this.state.username);
+      this.setState({ notUser: false });
+      this.props.updateP();
+    } else {
+      this.setState({ notUser: true });
+    }
   }
 
-  checkUrl(u) {
-    var that = this;
-    var url = nodeUrl + 'secret/' + that.props.user + '/' + u 
-    return new Promise((resolve, reject) => {
-    fetch(url)
-    .then(function(response) {
-      response.json().then(json => {
-        if ((json.correct === true)) {
-          resolve(true)
-        }
-        else {
-          resolve(false)
-        }
-      })
-      })
-    })
+  async checkKey(u) {
+    const url = nodeUrl + 'secret/' + this.props.user + '/' + u;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.correct;
   }
-  
-  handleUrlSubmit(event) {
-  event.preventDefault();
-  this.checkUrl(this.state.url).then(response => {
-    if(response){
+
+  async handleKeySubmit(event) {
+    event.preventDefault();
+    const validKey = await this.checkKey(this.state.url);
+    if(validKey) {
       this.props.done();
       this.setState({ url: '' });
       this.props.updateP();
-    }
-    else{
+    } else {
       this.setState({ url: '' });
     }
-  })
   }
 
   renderForm() {
@@ -234,7 +204,7 @@ class Instructions extends Component {
 
   renderUrlForm() {
     return (
-      <Form onSubmit={ this.handleUrlSubmit }>
+      <Form onSubmit={ this.handleKeySubmit }>
         <Form.Group widths='equal'>
           <Form.Input
             label='Secret Word'
@@ -266,7 +236,7 @@ class Instructions extends Component {
   }
 
   getActiveIndex() {
-    return this.props.activeStep.indexOf(true);
+    return this.props.activeStep;
   }
 
   render() {
