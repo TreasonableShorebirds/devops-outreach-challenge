@@ -60,3 +60,7 @@ typings/
 mongodb/dbdata
 # DS_store for mac
 .DS_Store
+# Terraform 
+react/.terraform/
+react/terraform.tfstate
+

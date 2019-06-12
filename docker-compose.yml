@@ -7,7 +7,7 @@ services:
     volumes:
       - ./react/src/:/app/src/
     ports:
-      - "3000:3000"
+      - "80:3000"
   db:
     container_name: mongodb
     image: mongo:latest
