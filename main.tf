@@ -45,10 +45,13 @@ resource "aws_instance" "webserver"{
     sudo yum install yarn git -y
     sudo amazon-linux-extras install docker
     sudo service docker start
+    sude service docker enable
     sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
     git clone https://github.com/liatrio/apprentice-outreach-instruction-application.git
     cd apprentice-outreach-instruction-application
+    echo 'export REACT_APP_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)' >> /etc/profile
+    source /etc/profile
     docker-compose up -d
     EOF
 }
