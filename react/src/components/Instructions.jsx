@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
 
-//var ec2 = 'http://ec2-34-211-208-118.us-west-2.compute.amazonaws.com:3001/'
-var ec2 = 'http://localhost:3001/'
+
+const host = process.env.REACT_APP_IP || 'localhost'
+const nodeUrl = 'http://'+ host + ':3001/'
 
 const instructionText = [
   <div>
@@ -157,7 +158,7 @@ class Instructions extends Component {
     var that = this;
     that.checkUsername(that.state.username).then(function(valid) {
       if (valid !== false) {
-        var url = ec2 + 'user/' + that.state.username
+        var url = nodeUrl + 'user/' + that.state.username
         fetch(url)
         .then(function(response) {
           response.json().then(json => {
@@ -179,7 +180,7 @@ class Instructions extends Component {
 
   checkUrl(u) {
     var that = this;
-    var url = ec2 + 'secret/' + that.props.user + '/' + u 
+    var url = nodeUrl + 'secret/' + that.props.user + '/' + u 
     return new Promise((resolve, reject) => {
     fetch(url)
     .then(function(response) {
