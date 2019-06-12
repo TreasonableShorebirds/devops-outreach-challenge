@@ -4,6 +4,8 @@ services:
   react:
     container_name: react
     build: ./react
+    environment:
+      - REACT_APP_IP
     volumes:
       - ./react/src/:/app/src/
     ports:
