@@ -24,8 +24,8 @@ class App extends Component {
       user: localUser || '',
       key: localKey || '',
       done: localDone || '',
-      active: [ true, false, false, false, false, false ],
-      completed: [ false, false, false, false, false, false ]
+      active: 0, // The currently displayed step
+      completed: -1 // The highest step completed
     };
     this.updateProgress = this.updateProgress.bind(this);
     this.updateCompletion = this.updateCompletion.bind(this);
@@ -36,7 +36,6 @@ class App extends Component {
     this.hasFixedBuild = this.hasFixedBuild.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.prevStep = this.prevStep.bind(this);
-    this.setRemainingToFalse = this.setRemainingToFalse.bind(this);
     this.setUser = this.setUser.bind(this);
     this.clearUser = this.clearUser.bind(this);
     this.completedAll = this.completedAll.bind(this);
@@ -65,8 +64,8 @@ class App extends Component {
     localStorage.removeItem('USER');
     localStorage.removeItem('DONE');
     localStorage.removeItem('KEY');
-    this.setRemainingToFalse(0);
-    this.updateActive(this.state.completed.indexOf(false));
+    this.updateCompletion(-1);
+    this.updateActive(0);
   }
 
   save(u) {
@@ -80,11 +79,9 @@ class App extends Component {
   }
 
   prevStep() {
-    const currentStep = this.state.active.indexOf(true);
+    const currentStep = this.state.active;
     if (currentStep > 0) {
-      let newActive = [ false, false, false, false, false, false ];
-      newActive[currentStep - 1] = true;
-      this.setState({ active: newActive });
+      this.setState({ active: currentStep - 1 });
     }
   }
 
@@ -93,166 +90,117 @@ class App extends Component {
   }
 
   nextStep() {
-    const currentStep = this.state.active.indexOf(true);
+    const currentStep = this.state.active;
     if (currentStep < 5) { // length of active
-      let newActive = [ false, false, false, false, false, false ];
-      newActive[currentStep + 1] = true;
-      this.setState({ active: newActive });
+      this.setState({ active: currentStep + 1 });
     }
   }
 
-  hasEnabledTravis(u) {
+  async hasEnabledTravis(u) {
     const url =
       'https://api.travis-ci.org/repo/' + u +
-      '%2Fdevops-demo-app/builds?limit=5';
-    return fetch(url, { headers: { 'Travis-API-Version': '3' } })
-      .then(function(a) {
-        return a.json();
-      })
-      .then(function(b) {
-        if ( b.builds && b.builds.length > 0) {
-          return true;
-        }
-        else {
-          return false;
-        }
-      });
+      '%2Fapprentice-outreach-demo-application/builds?limit=5';
+    const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
+    const data = await response.json();
+    return (data.builds && data.builds.length > 0);
   }
 
-  hasFixedBuild(u) {
+  async hasFixedBuild(u) {
     const url =
       'https://api.travis-ci.org/repo/' + u +
-      '%2Fdevops-demo-app/builds?limit=5';
-    return fetch(url, { headers: { 'Travis-API-Version': '3' } })
-      .then(function(a) {
-        return a.json();
-      })
-      .then(function(b) {
-        if(b.builds[0].state === 'passed') {
-          return true;
-        }
-        else {
-          return false;
-        }
-      });
-
+      '%2Fapprentice-outreach-demo-application/builds?limit=5';
+    const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
+    const data = await response.json();
+    return data.builds[0].state === 'passed';
   }
 
-  hasAddedTravis(u) {
+  async hasAddedTravis(u) {
     const url =
-      'https://api.github.com/repos/'+u+'/devops-demo-app/contents/'
-    return fetch(url)
-      .then(function(a) {
-        return a.json();
-      })
-      .then(function(b) {
-        for (var key in b) {
-          if (b[key].name === '.travis.yml') {
-            return true;
-          }
-        }
-        return false;
-      });
+      'https://api.github.com/repos/' + u + '/apprentice-outreach-demo-application/contents/';
+    const response = await fetch(url);
+    const data = await response.json();
+    for (var key in data) {
+      if (data[key].name === '.travis.yml') {
+        return true;
+      }
+    }
+    return false;
   }
 
-  hasForked(u) {
+  async hasForked(u) {
     const url =
-      'https://api.github.com/repos/TreasonableShorebirds/devops-demo-app/forks';
-    return fetch(url)
-      .then(function(a) {
-        return a.json();
-      })
-      .then(function(b) {
-        for (var key in b) {
-          if (b[key].owner.login === u) {
-            return true;
-          }
-        }
-        return false;
-      });
+      'https://api.github.com/repos/liatrio/apprentice-outreach-demo-application/forks';
+    const response = await fetch(url);
+    const data = await response.json();
+    for (var key in data) {
+      if (data[key].owner.login === u) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  updateCompletion(index, value) {
-    let newCompleted = this.state.completed;
-    newCompleted[index] = value;
-    this.setState({ completed: newCompleted });
+  updateCompletion(index) {
+    index = index > 5 ? 5 : index < -1 ? -1 : index;
+    this.setState({ completed: index });
   }
 
   updateActive(index) {
-    let newActive = [ false, false, false, false, false, false ];
-    newActive[index] = true;
-    this.setState({ active: newActive });
-  }
-
-  setRemainingToFalse(start) {
-    for (var i = start; i < this.state.completed.length; i++) {
-      this.updateCompletion(i, false);
-    }
+    index = index > 5 ? 5 : index < 0 ? 0 : index;
+    this.setState({ active: index });
   }
 
   completedAll() {
-    for (var i = 0; i < this.state.completed.length; i++) {
-      if ( this.state.completed[i] === false ) {
-        return false;
-      }
-    }
-    return true;
+    return this.state.completed === 5;
   }
 
-  updateProgress() {
-    if (this.state.user !== '') {
-      this.updateCompletion(0, true);
-      var that = this;
-      this.hasForked(this.state.user)
-        .then(function(forked) {
-          if (forked === true) {
-            that.updateCompletion(1, true);
-            that.hasAddedTravis(that.state.user)
-              .then(function(addedTravis) {
-                if (addedTravis === true) {
-                  that.updateCompletion(2, true);
-                  that.hasEnabledTravis(that.state.user)
-                    .then(function(enabledTravis) {
-                      if (enabledTravis === true) {
-                        that.updateCompletion(3, true);
-                        that.hasFixedBuild(that.state.user)
-                          .then(function(fixedBuild) {
-                            if (fixedBuild === true) {
-                              that.updateCompletion(4, true);
-                              if (that.state.done === 'yes') {
-                                that.updateCompletion(5, true);
-                                that.updateActive(that.state.completed.indexOf(false));
-                              }
-                              else {
-                                that.setRemainingToFalse(5);
-                                that.updateActive(that.state.completed.indexOf(false));
-                              }
-                            }
-                            else {
-                              that.setRemainingToFalse(4);
-                              that.updateActive(that.state.completed.indexOf(false));
-                            }
-                          });
-                      }
-                      else {
-                        that.setRemainingToFalse(3);
-                        that.updateActive(that.state.completed.indexOf(false));
-                      }
-                    });
-                } else {
-                  that.setRemainingToFalse(2);
-                  that.updateActive(that.state.completed.indexOf(false));
-                }
-              });
-          } else {
-            that.setRemainingToFalse(1);
-            that.updateActive(that.state.completed.indexOf(false));
-          }
-        });
-    } else {
-      this.setRemainingToFalse(0);
-      this.updateActive(this.state.completed.indexOf(false));
+  async getNewCompletion() {
+    switch(this.state.completed) {
+      case -1:
+        if(this.state.user === '') {
+          return -1;
+        }
+        /* Fallthrough */
+      case 0:
+        const forked = await this.hasForked(this.state.user);
+        if(!forked) {
+          return 0;
+        }
+        /* Fallthrough */
+      case 1:
+        const hasTravis = await this.hasAddedTravis(this.state.user);
+        if(!hasTravis) {
+          return 1;
+        }
+        /* Fallthrough */
+      case 2:
+        const enabledTravis = await this.hasEnabledTravis(this.state.user);
+        if(!enabledTravis) {
+          return 2;
+        }
+        /* Fallthrough */
+      case 3:
+        const fixedBuild = await this.hasFixedBuild(this.state.user);
+        if(!fixedBuild) {
+          return 3;
+        }
+        /* Fallthrough */
+      case 4:
+        if(!this.state.done)
+        {
+          return 4;
+        }
+        /* Fallthrough */
+      default:
+        return 5;
     }
+  }
+
+  async updateProgress() {
+
+    const newProgress = await this.getNewCompletion();
+    this.updateCompletion(newProgress);
+    this.updateActive(newProgress + 1);
   }
 
   render() {
@@ -281,7 +229,7 @@ class App extends Component {
                 { this.completedAll() ?
                   <Segment color='green'>
                     Congratulations, you have completed the DevOps Challenge! <br />
-		    <a target="_blank" rel="noopener noreferrer" href="http://tinyurl.com/liatrio">Link to form</a>
+                    <a target="_blank" rel="noopener noreferrer" href="http://tinyurl.com/liatrio">Link to form</a>
                   </Segment> :
                   <Instructions
                     activeStep={ this.state.active }
