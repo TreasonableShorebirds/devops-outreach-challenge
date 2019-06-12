@@ -17,8 +17,8 @@ resource "aws_security_group" "websg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    from_port = 3000 
-    to_port = 3000 
+    from_port = 3001 
+    to_port = 3001 
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -35,13 +35,13 @@ resource "aws_instance" "webserver"{
   instance_type = "t2.micro"
   key_name = "seanj"
   vpc_security_group_ids = ["${aws_security_group.websg.id}"]
-  tags{
+  tags = {
     Name = "apprentice-outreach-instruction-application"
   }
   user_data = <<-EOF
     #!/bin/bash
     sudo yum update -y
-    sudo yum install -y git 
+    sudo yum install -y 
     sudo yum install yarn git -y
     sudo amazon-linux-extras install docker
     sudo service docker start
