@@ -34,7 +34,7 @@ const instructionText = [
     <br />
 
     Liatrio is a DevOps consulting company, but a rather unique one.
-    Rather that focusing only on consulting, or focusing only on engineering
+    Rather than focusing only on consulting, or focusing only on engineering
     solutions, Liatrio hires both consultants and engineers to work onsite
     with clients. This helps cover both major elements of DevOps, the tools
     use and engineering solutions, but also the cultural shift and
@@ -44,7 +44,9 @@ const instructionText = [
     <br />
   </div>,
   <div>
-    GitHub is a hosting service for use with the version control system git. It's common to use version control systems like git to manage changes to your code, and services like GitHub make sharing those changes easy.
+    GitHub is a hosting service for use with the version control system git.
+    It's common to use version control systems like git to manage changes to
+    your code, and services like GitHub make sharing those changes easy.
     <br />
     <br />
     Create a <a target="_blank" rel="noopener noreferrer" href="https://github.com/join">GitHub</a> account if you don't already have one.
@@ -55,53 +57,58 @@ const instructionText = [
     <br />
   </div>,
   <div>
-    GitHub uses a concept of 'forking' when someone wants to make their own version of someone else's project. We've created a demo application, to show off some automated pipeline tools, and to test your debugging skills. You can take the project we've created, and make your own copy where you can fix the bugs.
+    GitHub uses a concept of 'forking' when someone wants to make their own
+    copy of someone else's project. We've created a demo application to show
+    off some automated pipeline tools, and to test your debugging skills.
+    Using GitHub, you can take the project we've created, and make your
+    own copy where you can fix the bugs.
     <br />
     <br />
     Fork <a target="_blank" rel="noopener noreferrer" href="https://github.com/liatrio/apprentice-outreach-demo-application">liatrio/apprentice-outreach-demo-application</a> on GitHub.
     <br />
     <br />
-    Click the button below when done.
+    Click the button below when you're done.
     <br />
     <br />
   </div>,
   <div>
-    Travis CI is a continous integration service which helps automate building and testing of projects.
-    DevOps and continous integration go hand in hand, helping to ease the process of delivering code.
+    Travis CI is a continuous integration service which helps automate building and testing of projects.
+    DevOps and continuous integration go hand in hand, helping to ease the process of delivering code.
     Travis CI integrates with GitHub, and can be configured directly from your project.
     <br />
     <br />
     Add the following Travis CI configuration as a new file called <code>.travis.yml</code> to your fork.
     <Segment color='green'>
       <pre>{`language: node_js
+language: node_js
 node_js:
-  - "10"
+ - "10"
 services:
-  - docker
+ - docker
 before_install:
-  - ./install_compose.sh
+ - ./install_compose.sh
 script:
-  - export REACT_APP_DOMAIN=backend-demo-app
-  - docker-compose pull
-  - docker-compose build
-  - docker-compose start
-  - docker ps
-  - docker-compose exec frontend sh -c "npm test"`}</pre>
+ - export REACT_APP_DOMAIN=backend-demo-app
+ - docker-compose up -d
+ - sleep 20
+ - docker ps
+ - docker-compose exec frontend sh -c "npm test"`}</pre>
     </Segment>
-    Click the button below when done.
+    Click the button below when you're done.
     <br />
     <br />
   </div>,
   <div>
     Make sure to sign into Travis CI with your github account.
     Travis CI will only automatically run on repositories when you tell it to.
-    On <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">travis-ci.org</a>, enable your fork of demo-application so that it will build.
+    On <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">travis-ci.org</a>,
+    enable your fork of the demo application so that it will build.
     <br />
     <br />
     Trigger a build using the Travis CI web console.
     <br />
     <br />
-    Click the button below when done.
+    Click the button below when you're done.
     <br />
     <br />
   </div>,
@@ -110,13 +117,14 @@ script:
     <br />
     <br />
     To debug the project, you'll probably want to run your own version. This demo application runs in Docker, which is
-    a containerization tool, letting you set up unique enviornments for projects to run inside of. For this debugging you
-    can install Docker locally, or use 
+    a containerization tool, letting you set up unique environments for projects to run inside of. For this debugging you
+    can install Docker locally, or use
     <a target="_blank" rel="noopener noreferrer" href="https://labs.play-with-docker.com/"> Play with Docker</a>.
     If you use Play with Docker, make sure to also create a Docker Hub account at
+    <a target="_blank" rel="noopener noreferrer" href="https://hub.docker.com/"> hub.docker.com</a>.
     <br />
     <br />
-    This application is a simple demo, with a React frontend and a Django backend, networked with Docker.
+    This application is a simple demo, with a React frontend and a Django backend, networked using Docker.
     There are several bugs in the application, both in the Docker configuration, and the frontend application, but none in
     the backend application.
     <br />
@@ -133,14 +141,14 @@ $ docker-compose up`}</pre>
     all of the bugs.
     <br />
     <br />
-    Once you've found all the bugs and your latest build has passed, click the button bellow to continue.
+    Once you've found all the bugs and your latest build has passed, click the button below to continue.
     <br />
     <br />
   </div>,
   <div>
-    Now that you've debugged the application you'll be able to use it to get your code. Open up a browser with the
+    Now that you've debugged the application you'll be able to use it to get your secret key. Open up a browser with the
     application running, and input your randomly generated code. If the application has been fully debugged, you'll
-    get back your key, showing that you've finished.
+    get back a corresponding key, proving that you've finished.
     <br />
     <br />
   </div>
