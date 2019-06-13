@@ -1,7 +1,11 @@
 FROM node:12.2.0-alpine
 
-COPY . /app
 WORKDIR /app
-RUN npm install --silent --no-optional
+COPY package*.json .
 
-ENTRYPOINT ["npm", "start"]
+RUN yarn install --silent
+
+# Copy source code
+COPY . .
+
+ENTRYPOINT ["yarn", "start"]
