@@ -122,6 +122,9 @@ jobs:
     <br />
   </div>,
   <div>
+    Test
+  </div>,
+  <div>
     The build failed! Fix the build by examining the cause of failure in the build logs on <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">travis-ci.org</a>.
     <br />
     <br />
@@ -315,7 +318,7 @@ class Instructions extends Component {
     return (
       <Segment>
         { instructionText[ this.getActiveIndex() ] }
-        { this.getActiveIndex() === 6 ?
+        { this.getActiveIndex() === 7 ?
           this.renderKeyForm() : null }
         { this.getActiveIndex() === 1 ?
           this.renderForm() : null }
@@ -326,7 +329,7 @@ class Instructions extends Component {
             Please input a valid username.
           </Segment> : null }
          { (this.getActiveIndex() !== 0) &&
-           (this.getActiveIndex() !== 6) &&
+           (this.getActiveIndex() !== 7) &&
            (this.getActiveIndex() !== 1) ?
           this.renderUpdater() : null }
       </Segment>
