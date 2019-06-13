@@ -7,7 +7,8 @@ services:
     environment:
       - REACT_APP_IP
     volumes:
-      - ./react/src/:/app/src/
+      - ./react:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - "80:3000"
   db:
