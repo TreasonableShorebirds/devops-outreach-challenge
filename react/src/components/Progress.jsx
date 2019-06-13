@@ -19,8 +19,8 @@ class Progress extends Component {
       steps.push(
         <Step
           key={ t }
-          active={ i === this.props.activeStep }
-          completed={ i <= this.props.completedStep }
+          active={ i === this.props.activeStep  - 1}
+          completed={ i <= this.props.completedStep - 1 }
         >
           <Step.Content>
             <Step.Title>{ t }</Step.Title>

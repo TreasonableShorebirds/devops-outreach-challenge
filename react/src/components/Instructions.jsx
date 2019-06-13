@@ -317,20 +317,20 @@ class Instructions extends Component {
   render() {
     return (
       <Segment>
-        { instructionText[ this.getActiveIndex() ] }
-        { this.getActiveIndex() === 7 ?
+        { instructionText[ this.getActiveIndex() - 1 ] }
+        { this.getActiveIndex() === 8 ?
           this.renderKeyForm() : null }
-        { this.getActiveIndex() === 1 ?
+        { this.getActiveIndex() === 2 ?
           this.renderForm() : null }
-        { this.getActiveIndex() === 0 ?
+        { this.getActiveIndex() === 1 ?
           this.renderReading() : null }
-        { this.state.notUser && (this.getActiveIndex() === 0) ?
+        { this.state.notUser && (this.getActiveIndex() === 1) ?
           <Segment color='red'>
             Please input a valid username.
           </Segment> : null }
-         { (this.getActiveIndex() !== 0) &&
-           (this.getActiveIndex() !== 7) &&
-           (this.getActiveIndex() !== 1) ?
+           { (this.getActiveIndex() !== 1) &&
+           (this.getActiveIndex() !== 8) &&
+           (this.getActiveIndex() !== 2) ?
           this.renderUpdater() : null }
       </Segment>
     );
