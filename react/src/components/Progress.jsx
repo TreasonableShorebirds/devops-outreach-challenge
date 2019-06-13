@@ -4,11 +4,12 @@ import { Step } from 'semantic-ui-react';
 const stepTitles = [
   'Background Information',
   'GitHub Account',
-  'Fork devops-demo-app',
+  'Fork demo-application',
   'Add CI Config.',
   'Enable Travis CI',
-  'Correct Build Error',
-  'Run devops-demo-app'
+  'Fix Docker Errors',
+  'Fix React Errors',
+  'Run demo-application'
 ];
 
 class Progress extends Component {

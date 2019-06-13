@@ -30,6 +30,8 @@ class App extends Component {
       active: 0, // The currently displayed step
       completed: -1 // The highest step completed
     };
+
+    //this.hasFixedDocker = this.hasFixedDocker.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
     this.updateCompletion = this.updateCompletion.bind(this);
     this.updateActive = this.updateActive.bind(this);
@@ -103,7 +105,7 @@ class App extends Component {
 
   nextStep() {
     const currentStep = this.state.active;
-    if (currentStep < 6) { // length of active
+    if (currentStep < 7) { // length of active
       this.setState({ active: currentStep + 1 });
     }
   }
@@ -117,13 +119,26 @@ class App extends Component {
     return (data.builds && data.builds.length > 0);
   }
 
+  async hasFixedDocker(u) {
+    const url =
+      'https://api.travis-ci.org/repo/' + u +
+      '%2Fapprentice-outreach-demo-application/builds?limit=5';
+    const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
+    const data = await response.json();
+    console.log(data.builds[0]);
+    if(data.builds[0].stages[1].name !== "Docker-env") {
+      alert("Travis API Change function hasFixedDocker()");
+    }
+    return data.builds[0].stages[1].state === 'passed';
+
+  }
   async hasFixedBuild(u) {
     const url =
       'https://api.travis-ci.org/repo/' + u +
       '%2Fapprentice-outreach-demo-application/builds?limit=5';
     const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
     const data = await response.json();
-    console.log(data.builds[0].commit.sha);
+    console.log(data.builds[0]);
     const gitHubResponse = await fetch('https://api.github.com/repos/' +
       u + '/apprentice-outreach-demo-application/contents/.travis.yml' +
       '?ref=' + data.builds[0].commit.sha);
@@ -159,17 +174,17 @@ class App extends Component {
   }
 
   updateCompletion(index) {
-    index = index > 6 ? 6 : index < -1 ? -1 : index;
+    index = index > 7 ? 7 : index < -1 ? -1 : index;
     this.setState({ completed: index });
   }
 
   updateActive(index) {
-    index = index > 6 ? 6 : index < 0 ? 0 : index;
+    index = index > 7 ? 7 : index < 0 ? 0 : index;
     this.setState({ active: index });
   }
 
   completedAll() {
-    return this.state.completed === 6;
+    return this.state.completed === 7;
   }
 
   async getNewCompletion() {
@@ -203,19 +218,25 @@ class App extends Component {
         }
         /* Fallthrough */
       case 4:
-        const fixedBuild = await this.hasFixedBuild(this.state.user);
-        if(!fixedBuild) {
+        const fixedDocker = await this.hasFixedDocker(this.state.user);
+        if(!fixedDocker) {
           return 4;
         }
         /* Fallthrough */
       case 5:
-        if(!this.state.done)
-        {
+        const fixedBuild = await this.hasFixedBuild(this.state.user);
+        if(!fixedBuild) {
           return 5;
         }
         /* Fallthrough */
+      case 6:
+        if(!this.state.done)
+        {
+          return 6;
+        }
+        /* Fallthrough */
       default:
-        return 6;
+        return 7;
     }
   }
 
