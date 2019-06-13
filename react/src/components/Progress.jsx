@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Step } from 'semantic-ui-react';
 
 const stepTitles = [
+  'Background Information',
   'GitHub Account',
   'Fork devops-demo-app',
   'Add CI Config.',
