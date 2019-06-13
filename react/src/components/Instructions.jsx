@@ -86,13 +86,23 @@ node_js:
 services:
  - docker
 before_install:
- - ./install_compose.sh
-script:
- - export REACT_APP_DOMAIN=backend-demo-app
- - docker-compose up -d
- - sleep 20
- - docker ps
- - docker-compose exec frontend sh -c "npm test"`}</pre>
+  - ./install_compose.sh
+jobs:
+ include:
+   - stage: docker-env
+     script: 
+      - docker-compose up -d
+      - sleep 20
+      - docker ps
+      - docker inspect --format='{{.Config.Image}}' backend-demo-app
+      - docker inspect --format='{{.Config.Image}}' frontend-demo-app
+      - curl localhost:3000
+   - stage: npm-test
+     script:
+      - export REACT_APP_DOMAIN=backend-demo-app
+      - docker-compose up -d
+      - sleep 20
+      - docker-compose exec frontend sh -c "npm test"`}</pre>
     </Segment>
     Click the button below when you're done.
     <br />
