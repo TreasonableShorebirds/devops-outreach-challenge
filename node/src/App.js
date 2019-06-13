@@ -8,31 +8,31 @@ const port = 3001
 const User = require('./user');
 const app = express();
 
-function checkUsername(u) {
+
+const checkUsername = (u) => {
   return fetch('https://api.github.com/users/' + u)
-  .then(function(a) {
-   return a.json();
-  })
- .then(function(b) {
-   if (b.message === 'Not Found') {
-   return false;
- }
- else {
-   return b;
- }
- });
+    .then(function(a) {
+      return a.json();
+    })
+    .then(function(b) {
+      if (b.message === 'Not Found') {
+        return false;
+     }
+     else {
+         return b;
+     }
+   });
 }
 
-function encrypt(key) {
+const encrypt = (key) => {
     key = key.split('').reverse().join('');
-    for(let i = 0; i < 5; i++)
-    {
+    for(let i = 0; i < 5; i++) {
       key = md5(key);
     }
     return key;
 }
 
-const connectWithRetry = function() {
+const connectWithRetry = () => {
   return mongoose.connect("mongodb://mongodb/outreach", function(err) {
     if (err) {
       console.error('Failed to connect to mongo on startup - retrying in 5 sec');
@@ -40,6 +40,7 @@ const connectWithRetry = function() {
     }
   });
 };
+
 connectWithRetry();
 
 let db = mongoose.connection
@@ -47,7 +48,7 @@ let db = mongoose.connection
 db.once('open', function() {
     console.log('Server connected')
 }).catch((err) => {
-	console.log("Server failed to connect")	
+  console.log("Server failed to connect")
 })
 
 app.use(cors())
@@ -75,17 +76,17 @@ app.get('/user/:user', (req, res) => {
         checkUsername(name)
         .then(function(a) {
           console.log('ENTERED')
-          if(a !== false){
-           console.log('Adding new user');
-           const newUser = new User();
-           newUser.githubUsername = name;
-           newUser.secretKey = key;
-           newUser.encryptedKey = encryptedKey;
-           newUser.save();
-           res.json({ secret: key });
+          if(a !== false) {
+            console.log('Adding new user');
+            const newUser = new User();
+            newUser.githubUsername = name;
+            newUser.secretKey = key;
+            newUser.encryptedKey = encryptedKey;
+            newUser.save();
+            res.json({ secret: key });
           }
-          else{
-           res.send('GITHUB USER DOES NOT EXIST');
+          else {
+            res.send('GITHUB USER DOES NOT EXIST');
           }
         })  
       }
@@ -111,7 +112,6 @@ app.get('/secret/:user/:key', (req, res) => {
         else{
           res.send({ correct: false})
         }
-       // res.json({ secret: data.secretKey });
       }
     })
 })
@@ -120,5 +120,7 @@ app.get('/encrypt/:key', (req, res) => {
     const key = req.param.user
 
 });
+
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

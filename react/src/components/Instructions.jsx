@@ -31,7 +31,7 @@ const instructionText = [
   <div>
     Travis CI is a continous integration service which helps automate building and testing of projects.
     DevOps and continous integration go hand in hand, helping to ease the process of delivering code.
-    Travis CI integrates with GitHub, and can be congigured directly from your project.
+    Travis CI integrates with GitHub, and can be configured directly from your project.
     <br />
     <br />
     Add the following Travis CI configuration as a new file called <code>.travis.yml</code> to your fork.
@@ -56,6 +56,7 @@ script:
     <br />
   </div>,
   <div>
+    Make sure to sign into Travis CI with your github account.
     Travis CI will only automatically run on repositories when you tell it to.
     On <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">travis-ci.org</a>, enable your fork of demo-application so that it will build.
     <br />
@@ -73,9 +74,9 @@ script:
     <br />
     To debug the project, you'll probably want to run your own version. This demo application runs in Docker, which is
     a containerization tool, letting you set up unique enviornments for projects to run inside of. For this debugging you
-    can install Docker locally, or use
-    <a target="_blank" rel="noopener noreferrer" href="https://labs.play-with-docker.com/">Play with Docker</a>.
-    If you use Play with Docker, make sure to also create a Doocker Hub account at
+    can install Docker locally, or use 
+    <a target="_blank" rel="noopener noreferrer" href="https://labs.play-with-docker.com/"> Play with Docker</a>.
+    If you use Play with Docker, make sure to also create a Docker Hub account at
     <br />
     <br />
     This application is a simple demo, with a React frontend and a Django backend, networked with Docker.
@@ -85,8 +86,8 @@ script:
     <br />
     You can run the application with:
     <Segment color='green'>
-      <pre>{`$ git clone https://github.com/YOUR_USERNAME/devops-demo-app
-$ cd devops-demo-app
+      <pre>{`$ git clone https://github.com/YOUR_USERNAME/apprentice-outreach-demo-application
+$ cd apprentice-outreach-demo-application
 $ docker-compose up`}</pre>
     </Segment>
     By default, the application will run on port 3000 of localhost. Visiting that page might help with debugging.
