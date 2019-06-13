@@ -7,6 +7,43 @@ const nodeUrl = 'http://'+ host + ':3001/'
 
 const instructionText = [
   <div>
+    DevOps is a combination of Software Development and Server Operations.
+    It's focused on effective solutions to large scale problems.
+    Some important DevOps principles are:
+    <ul>
+      <li>
+        Understand the process of software development, and learning where
+        improvements in your development process will show the best results.
+      </li>
+      <li>
+        Providing fast feedback, letting developers see as quickly as possible
+        the results of their work so they can fix mistakes and see improvements.
+      </li>
+      <li>
+        Understanding the extent of the development process,
+        seeing who your work effects and what people rely on you for.
+      </li>
+    </ul>
+    DevOps work involves using automation tools, continuous integration,
+    and pipelines, but that isn't all DevOps is about. It's also about
+    company culture, sharing knowledge and work so everyone can benefit
+    from it, and measuring progress so everyone can understand what is
+    succeeding and what is not.
+
+    <br />
+    <br />
+
+    Liatrio is a DevOps consulting company, but a rather unique one.
+    Rather that focusing only on consulting, or focusing only on engineering
+    solutions, Liatrio hires both consultants and engineers to work onsite
+    with clients. This helps cover both major elements of DevOps, the tools
+    use and engineering solutions, but also the cultural shift and
+    understanding of DevOps concepts.
+
+    <br />
+    <br />
+  </div>,
+  <div>
     GitHub is a hosting service for use with the version control system git. It's common to use version control systems like git to manage changes to your code, and services like GitHub make sharing those changes easy.
     <br />
     <br />
@@ -246,20 +283,34 @@ class Instructions extends Component {
     return this.props.activeStep;
   }
 
+  renderReading() {
+    return (
+      <Button
+        onClick={ this.props.completedRead }
+        basic
+        color='green'
+      >
+        Complete Reading!
+      </Button>
+    );
+  }
   render() {
     return (
       <Segment>
         { instructionText[ this.getActiveIndex() ] }
-        { this.getActiveIndex() === 5 ?
+        { this.getActiveIndex() === 6 ?
           this.renderKeyForm() : null }
-        { this.getActiveIndex() === 0 ?
+        { this.getActiveIndex() === 1 ?
           this.renderForm() : null }
+        { this.getActiveIndex() === 0 ?
+          this.renderReading() : null }
         { this.state.notUser && (this.getActiveIndex() === 0) ?
           <Segment color='red'>
             Please input a valid username.
           </Segment> : null }
-        { ((this.getActiveIndex() !== 0) &&
-           (this.getActiveIndex() !== 5)) ?
+         { (this.getActiveIndex() !== 0) &&
+           (this.getActiveIndex() !== 6) &&
+           (this.getActiveIndex() !== 1) ?
           this.renderUpdater() : null }
       </Segment>
     );
