@@ -80,7 +80,6 @@ const instructionText = [
     Add the following Travis CI configuration as a new file called <code>.travis.yml</code> to your fork.
     <Segment color='green'>
       <pre>{`language: node_js
-language: node_js
 node_js:
  - "10"
 services:
@@ -94,6 +93,7 @@ jobs:
       - docker-compose up -d
       - sleep 20
       - docker ps
+      - ./container_test.sh
       - docker inspect --format='{{.Config.Image}}' backend-demo-app
       - docker inspect --format='{{.Config.Image}}' frontend-demo-app
       - curl localhost:3000
@@ -140,8 +140,8 @@ jobs:
     <br />
     You can run the application with:
     <Segment color='green'>
-      <pre>{`$ git clone https://github.com/YOUR_USERNAME/devops-demo-app
-$ cd devops-demo-app
+      <pre>{`$ git clone https://github.com/YOUR_USERNAME/apprentice-outreach-demo-application
+$ cd apprentice-outreach-demo-application
 $ docker-compose up`}</pre>
     </Segment>
     After running the above commands, you should notice that there seems to be some problems setting up the Docker environment. In the <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">Travis CI logs</a> you can see that the first build job called Docker-env fails. Examine the output logs carefully either locally or on Travis-CI. Once all the bugs are fixed the Docker-env build job will pass and you should be able to move onto the next step in the exercise! 
