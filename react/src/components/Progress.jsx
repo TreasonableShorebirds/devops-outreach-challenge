@@ -4,11 +4,12 @@ import { Step } from 'semantic-ui-react';
 const stepTitles = [
   'Background Information',
   'GitHub Account',
-  'Fork devops-demo-app',
+  'Fork demo-application',
   'Add CI Config.',
   'Enable Travis CI',
-  'Correct Build Error',
-  'Run devops-demo-app'
+  'Fix Docker Errors',
+  'Fix React Errors',
+  'Run demo-application'
 ];
 
 class Progress extends Component {
@@ -18,8 +19,8 @@ class Progress extends Component {
       steps.push(
         <Step
           key={ t }
-          active={ i === this.props.activeStep }
-          completed={ i <= this.props.completedStep }
+          active={ i === this.props.activeStep  - 1}
+          completed={ i <= this.props.completedStep - 1 }
         >
           <Step.Content>
             <Step.Title>{ t }</Step.Title>

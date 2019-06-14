@@ -80,19 +80,27 @@ const instructionText = [
     Add the following Travis CI configuration as a new file called <code>.travis.yml</code> to your fork.
     <Segment color='green'>
       <pre>{`language: node_js
-language: node_js
 node_js:
  - "10"
 services:
  - docker
 before_install:
- - ./install_compose.sh
-script:
- - export REACT_APP_DOMAIN=backend-demo-app
- - docker-compose up -d
- - sleep 20
- - docker ps
- - docker-compose exec frontend sh -c "npm test"`}</pre>
+  - ./install_compose.sh
+jobs:
+ include:
+   - stage: docker-env
+     script: 
+      - docker-compose up -d
+      - sleep 20
+      - docker ps
+      - ./container_test.sh
+      - curl localhost:3000
+   - stage: npm-test
+     script:
+      - export REACT_APP_DOMAIN=backend-demo-app
+      - docker-compose up -d
+      - sleep 20
+      - docker-compose exec frontend sh -c "npm test"`}</pre>
     </Segment>
     Click the button below when you're done.
     <br />
@@ -104,7 +112,7 @@ script:
     enable your fork of the demo application so that it will build.
     <br />
     <br />
-    Trigger a build using the Travis CI web console.
+    Trigger a build using the Travis CI web console. If done correctly you should see two jobs building, Docker-env and Npm-test. At this point both of these jobs will fail, however this is expected. The next part of this exercise will focus on fixing the errors in the pipeline.
     <br />
     <br />
     Click the button below when you're done.
@@ -130,19 +138,24 @@ script:
     <br />
     You can run the application with:
     <Segment color='green'>
-      <pre>{`$ git clone https://github.com/YOUR_USERNAME/devops-demo-app
-$ cd devops-demo-app
+      <pre>{`$ git clone https://github.com/YOUR_USERNAME/apprentice-outreach-demo-application
+$ cd apprentice-outreach-demo-application
 $ docker-compose up`}</pre>
     </Segment>
-    By default, the application will run on port 3000 of localhost. Visiting that page might help with debugging.
-    Use the results of Travis CI and your own skills to debug the application. Once you've made changes to the project,
-    you can push them to GitHub to have Travis CI rebuild the project. It's fine if it takes you multiple tries to find
-    all of the bugs.
+    After running the above commands, you should notice that there seems to be some problems setting up the Docker environment. In the <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">Travis CI logs</a> you can see that the first build job called Docker-env fails. Examine the output logs carefully either locally or on Travis-CI. Once all the bugs are fixed the Docker-env build job will pass and you should be able to move onto the next step in the exercise! 
     <br />
     <br />
-    Once you've found all the bugs and your latest build has passed, click the button below to continue.
-    <br />
-    <br />
+  </div>,
+  <div>
+    Congratulations, you've fixed the Docker bugs and now have a working environment for the project to run on! However, if you look at the Travis-CI logs, the build still fails because the build job Npm-test still has some problems. Similarly you'll notice that if you try to access the web project at localhost:3000 (Click 80 at the top of the screen if running on <a target="_blank" rel="noopener noreferrer" href="https://labs.play-with-docker.com/"> Play with Docker</a>) you're presented with a blank screen. There appears to be some bugs in the source code.  
+   <br /> 
+   <br /> 
+    In this step of the exercise you'll be debugging the React application. Read the <a target="_blank" rel="noopener noreferrer" href="https://travis-    ci.org/">travis-ci logs</a> to gain some more info on exactly what's going wrong in the React application. Once you've fixed all the errors in the React application, the Npm-test build job on travis-ci will pass.
+  <br />
+  <br />
+    Click the button below when you're done.
+  <br />
+  <br />
   </div>,
   <div>
     Now that you've debugged the application you'll be able to use it to get your secret key. Open up a browser with the
@@ -304,20 +317,20 @@ class Instructions extends Component {
   render() {
     return (
       <Segment>
-        { instructionText[ this.getActiveIndex() ] }
-        { this.getActiveIndex() === 6 ?
+        { instructionText[ this.getActiveIndex() - 1 ] }
+        { this.getActiveIndex() === 8 ?
           this.renderKeyForm() : null }
-        { this.getActiveIndex() === 1 ?
+        { this.getActiveIndex() === 2 ?
           this.renderForm() : null }
-        { this.getActiveIndex() === 0 ?
+        { this.getActiveIndex() === 1 ?
           this.renderReading() : null }
-        { this.state.notUser && (this.getActiveIndex() === 0) ?
+        { this.state.notUser && (this.getActiveIndex() === 1) ?
           <Segment color='red'>
             Please input a valid username.
           </Segment> : null }
-         { (this.getActiveIndex() !== 0) &&
-           (this.getActiveIndex() !== 6) &&
-           (this.getActiveIndex() !== 1) ?
+           { (this.getActiveIndex() !== 1) &&
+           (this.getActiveIndex() !== 8) &&
+           (this.getActiveIndex() !== 2) ?
           this.renderUpdater() : null }
       </Segment>
     );

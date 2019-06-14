@@ -9,6 +9,8 @@ import Instructions from './components/Instructions';
 import Footer from './components/Footer';
 import './App.css';
 
+const numberOfSteps = 8;
+
 class App extends Component {
   constructor() {
     super();
@@ -16,35 +18,30 @@ class App extends Component {
     let localDone;
     let localKey;
     let localReading;
+    let localCompleted;
     if (window.localStorage) {
       localUser = JSON.parse(localStorage.getItem('USER'));
       localKey = JSON.parse(localStorage.getItem('KEY'));
       localDone = JSON.parse(localStorage.getItem('DONE'));
       localReading = JSON.parse(localStorage.getItem('READING'));
+      localCompleted = JSON.parse(localStorage.getItem('COMPLETED'));
     }
     this.state = {
       user: localUser || '',
       key: localKey || '',
       done: localDone || '',
       doneReading: localReading || '',
-      active: 0, // The currently displayed step
-      completed: -1 // The highest step completed
+      completed: localCompleted || 0, // The number of steps completed
+      active: (localCompleted || 0) + 1, // The currently displayed step
     };
+
     this.updateProgress = this.updateProgress.bind(this);
-    this.updateCompletion = this.updateCompletion.bind(this);
-    this.updateActive = this.updateActive.bind(this);
-    this.hasForked = this.hasForked.bind(this);
-    this.hasAddedTravis = this.hasAddedTravis.bind(this);
-    this.hasEnabledTravis = this.hasEnabledTravis.bind(this);
-    this.hasFixedBuild = this.hasFixedBuild.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.prevStep = this.prevStep.bind(this);
     this.setUser = this.setUser.bind(this);
     this.clearUser = this.clearUser.bind(this);
-    this.completedAll = this.completedAll.bind(this);
     this.completeAll = this.completeAll.bind(this);
     this.setKey = this.setKey.bind(this);
-    this.saveKey = this.saveKey.bind(this);
     this.completedReading = this.completedReading.bind(this);
   }
 
@@ -54,6 +51,7 @@ class App extends Component {
   }
 
   completedReading() {
+
     console.log('test');
     this.setState({ doneReading: 'yes' });
     localStorage.setItem('READING', JSON.stringify('yes'));
@@ -76,8 +74,9 @@ class App extends Component {
     localStorage.removeItem('DONE');
     localStorage.removeItem('KEY');
     localStorage.removeItem('READING');
-    this.updateCompletion(-1);
-    this.updateActive(0);
+    localStorage.removeItem('COMPLETED')
+    this.updateCompletion(0);
+    this.updateActive(1);
   }
 
   save(u) {
@@ -92,7 +91,7 @@ class App extends Component {
 
   prevStep() {
     const currentStep = this.state.active;
-    if (currentStep > 0) {
+    if (currentStep > 1) {
       this.setState({ active: currentStep - 1 });
     }
   }
@@ -103,7 +102,8 @@ class App extends Component {
 
   nextStep() {
     const currentStep = this.state.active;
-    if (currentStep < 6) { // length of active
+    console.log(numberOfSteps);
+    if (currentStep < numberOfSteps) { // length of active
       this.setState({ active: currentStep + 1 });
     }
   }
@@ -117,13 +117,30 @@ class App extends Component {
     return (data.builds && data.builds.length > 0);
   }
 
+  async hasFixedDocker(u) {
+    const url =
+      'https://api.travis-ci.org/repo/' + u +
+      '%2Fapprentice-outreach-demo-application/builds?limit=5';
+    const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
+    const data = await response.json();
+    console.log(data.builds[0]);
+    try {
+      if(data.builds[0].stages[1].name !== "Docker-env") {
+        alert("Travis API Change function hasFixedDocker()");
+      }
+      return data.builds[0].stages[1].state === 'passed';
+    } catch(error) {
+      return false;
+    }
+
+  }
   async hasFixedBuild(u) {
     const url =
       'https://api.travis-ci.org/repo/' + u +
       '%2Fapprentice-outreach-demo-application/builds?limit=5';
     const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
     const data = await response.json();
-    console.log(data.builds[0].commit.sha);
+    console.log(data.builds[0]);
     const gitHubResponse = await fetch('https://api.github.com/repos/' +
       u + '/apprentice-outreach-demo-application/contents/.travis.yml' +
       '?ref=' + data.builds[0].commit.sha);
@@ -159,63 +176,78 @@ class App extends Component {
   }
 
   updateCompletion(index) {
-    index = index > 6 ? 6 : index < -1 ? -1 : index;
+    if(index > numberOfSteps) {
+      index = numberOfSteps;
+    } else if(index < 0) {
+      index = 0;
+    }
     this.setState({ completed: index });
+    localStorage.setItem('COMPLETED', JSON.stringify(index));
   }
 
   updateActive(index) {
-    index = index > 6 ? 6 : index < 0 ? 0 : index;
+    if(index > numberOfSteps) {
+      index = numberOfSteps;
+    } else if(index < 1) {
+      index = 1;
+    }
     this.setState({ active: index });
   }
 
   completedAll() {
-    return this.state.completed === 6;
+    return this.state.completed === numberOfSteps;
   }
 
   async getNewCompletion() {
     switch(this.state.completed) {
-      case -1:
-        if(!this.state.doneReading) {
-          return -1;
-        }
-        /* Fallthrough */
       case 0:
-        if(this.state.user === '' ) {
+        if(!this.state.doneReading) {
           return 0;
         }
         /* Fallthrough */
       case 1:
-        const forked = await this.hasForked(this.state.user);
-        if(!forked) {
+        if(this.state.user === '' ) {
           return 1;
         }
         /* Fallthrough */
       case 2:
-        const hasTravis = await this.hasAddedTravis(this.state.user);
-        if(!hasTravis) {
+        const forked = await this.hasForked(this.state.user);
+        if(!forked) {
           return 2;
         }
         /* Fallthrough */
       case 3:
-        const enabledTravis = await this.hasEnabledTravis(this.state.user);
-        if(!enabledTravis) {
+        const hasTravis = await this.hasAddedTravis(this.state.user);
+        if(!hasTravis) {
           return 3;
         }
         /* Fallthrough */
       case 4:
-        const fixedBuild = await this.hasFixedBuild(this.state.user);
-        if(!fixedBuild) {
+        const enabledTravis = await this.hasEnabledTravis(this.state.user);
+        if(!enabledTravis) {
           return 4;
         }
         /* Fallthrough */
       case 5:
-        if(!this.state.done)
-        {
+        const fixedDocker = await this.hasFixedDocker(this.state.user);
+        if(!fixedDocker) {
           return 5;
         }
         /* Fallthrough */
+      case 6:
+        const fixedBuild = await this.hasFixedBuild(this.state.user);
+        if(!fixedBuild) {
+          return 6;
+        }
+        /* Fallthrough */
+      case 7:
+        if(!this.state.done)
+        {
+          return 7;
+        }
+        /* Fallthrough */
       default:
-        return 6;
+        return 8;
     }
   }
 
