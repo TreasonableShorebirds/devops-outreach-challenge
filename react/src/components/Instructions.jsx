@@ -94,8 +94,6 @@ jobs:
       - sleep 20
       - docker ps
       - ./container_test.sh
-      - docker inspect --format='{{.Config.Image}}' backend-demo-app
-      - docker inspect --format='{{.Config.Image}}' frontend-demo-app
       - curl localhost:3000
    - stage: npm-test
      script:
@@ -111,10 +109,10 @@ jobs:
   <div>
     Travis CI will only automatically run on repositories when you tell it to.
     On <a target="_blank" rel="noopener noreferrer" href="https://travis-ci.org/">travis-ci.org</a>,
-    enable your fork of the demo application so that it will build. 
+    enable your fork of the demo application so that it will build.
     <br />
     <br />
-    Trigger a build using the Travis CI web console. If done correctly you should see two jobs building, Docker-env and Npm-test. At this point both of these jobs will fail, however this is expected. The next part of this exercise will focus on fixing the errors in the pipeline.  
+    Trigger a build using the Travis CI web console. If done correctly you should see two jobs building, Docker-env and Npm-test. At this point both of these jobs will fail, however this is expected. The next part of this exercise will focus on fixing the errors in the pipeline.
     <br />
     <br />
     Click the button below when you're done.
