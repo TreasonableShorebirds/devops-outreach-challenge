@@ -40,6 +40,7 @@ const connectWithRetry = function() {
     }
   });
 };
+
 connectWithRetry();
 
 let db = mongoose.connection
@@ -51,14 +52,6 @@ db.once('open', function() {
 })
 
 app.use(cors())
-
-app.get('/', (req, res) => {
-    User.find({}, function(err, data){
-        if(err)
-            console.log(err)
-        res.send(data);
-    })
-})
 
 app.get('/user/:user', (req, res) => {
     const name = req.params.user
@@ -90,14 +83,6 @@ app.get('/user/:user', (req, res) => {
         })  
       }
     });
-})
-
-app.get('/delete', (req, res) => {
-    User.remove({}, function(err) {
-      if(err)
-        console.log(err);
-    })
-    res.send('Removed Everything');
 })
 
 app.get('/secret/:user/:key', (req, res) => {
