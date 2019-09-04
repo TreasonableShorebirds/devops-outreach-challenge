@@ -2,6 +2,10 @@
 # ECS configuration for apprentice-outreach
 #
 
+
+
+## Create another task definition for node
+
 resource "aws_ecs_cluster" "main" {
   name = "apprentice-outreach-cluster"
 }
@@ -12,7 +16,7 @@ data "aws_iam_role" "ecs_task_execution" {
   name = "ecsTaskExecutionRole"
 }
 
-resource "aws_ecs_task_definition" "apprentice-outreach" {
+resource "aws_ecs_task_definition" "apprentice-outreach-mongodb-outreach" {
   family                   = "apprentice-outreach"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -50,6 +54,48 @@ resource "aws_ecs_task_definition" "apprentice-outreach" {
     }
   ]
   DEFINITION
+}
+
+
+resource "aws_ecs_task_definition" "outreach-mongodb" {
+  family                   = "outreach-mongodb"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = "${var.fargate_cpu}"
+  memory                   = "${var.fargate_memory}"
+  execution_role_arn       = "${data.aws_iam_role.ecs_task_execution.arn}"
+
+  container_definitions = <<DEFINITION
+  [
+    {
+      "cpu": ${var.fargate_cpu},
+      "environment": [{
+        "name": "botHostname",
+        "value": "${var.app_host}.${var.domain}"
+      }],
+      "executionRoleArn": "${data.aws_iam_role.ecs_task_execution.arn}",
+      "image": "mongo:3.6",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "outreach-mongodb",
+          "awslogs-region": "${var.aws_region}",
+          "awslogs-stream-prefix": "outreach-mongodb"
+        }
+      },
+      "memory": ${var.fargate_memory},
+      "name": "outreach-mongodb",
+      "networkMode": "awsvpc",
+      "portMappings": [
+        {
+          "containerPort": ${var.db_port},
+          "hostPort": ${var.db_port} 
+        }
+      ],
+    }
+  ]
+  DEFINITION
+}
 
   #container_definitions = <<DEFINITION
   #[
@@ -87,7 +133,6 @@ resource "aws_ecs_task_definition" "apprentice-outreach" {
   #  }
   #]
   #DEFINITION
-}
 
 resource "aws_ecs_service" "main" {
   name            = "apprentice-outreach-service"
@@ -105,6 +150,29 @@ resource "aws_ecs_service" "main" {
     target_group_arn = "${aws_alb_target_group.app.id}"
     container_name   = "apprentice-outreach"
     container_port   = "${var.app_port}"
+  }
+
+  depends_on = [
+    "aws_alb_listener.front_end",
+  ]
+}
+
+resource "aws_ecs_service" "mongodb-service" {
+  name            = "mongodb-service"
+  cluster         = "${aws_ecs_cluster.main.id}"
+  task_definition = "${aws_ecs_task_definition.outreach-mongodb.arn}"
+  desired_count   = "${var.app_count}"
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    security_groups = ["${aws_security_group.ecs_tasks.id}"]
+    subnets         = ["${aws_subnet.private.*.id}"]
+  }
+
+  load_balancer {
+    target_group_arn = "${aws_alb_target_group.app.id}"
+    container_name   = "outreach-mongodb"
+    container_port   = "${var.db_port}"
   }
 
   depends_on = [

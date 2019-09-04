@@ -22,6 +22,11 @@ variable "app_port" {
   default     = 3000
 }
 
+variable "db_port" {
+  description = "Port exposed by the docker image to access the database"
+  default     = 27017 
+}
+
 variable "app_count" {
   description = "Number of docker containers to run"
   default     = 1

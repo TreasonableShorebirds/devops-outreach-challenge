@@ -20,16 +20,16 @@ resource "aws_kms_alias" "apprentice-outreach" {
   target_key_id = "${aws_kms_key.apprentice-outreach.id}"
 }
 
-#resource "aws_ssm_parameter" "mongo_db_string" {
-#  name        = "gratibot-mongodb-string"
-#  description = "mongo db instance for the gratibot app"
-#  key_id      = "${aws_kms_key.gratibot.key_id}"
-#  value       = "${var.mongo_db_string}"
-#  type        = "SecureString"
-#}
+resource "aws_ssm_parameter" "mongo_db_string" {
+  name        = "apprentice-outreach-mongodb-string"
+  description = "mongo db instance for the apprentice outreach app"
+  key_id      = "${aws_kms_key.apprentice-outreach.key_id}"
+  value       = "${var.mongo_db_string}"
+  type        = "SecureString"
+}
 
-resource "aws_iam_role" "ecs_task_execution" {
-  name = "ecsTaskExecutionRole"
+resource "aws_iam_role" "ecs_task_execution_outreach" {
+  name = "ecsTaskExecutionRoleOutreach"
 
   assume_role_policy = <<EOF
 {
@@ -50,7 +50,7 @@ EOF
 
 resource "aws_iam_role_policy" "ecs_task_policy" {
   name = "ecs_task_policy"
-  role = "${aws_iam_role.ecs_task_execution.id}"
+  role = "${aws_iam_role.ecs_task_execution_outreach.id}"
 
   policy = <<EOF
 {
