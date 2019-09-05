@@ -4,7 +4,7 @@
 
 resource "aws_alb" "main" {
   name            = "tf-ecs-chat"
-  subnets         = ["${aws_subnet.public.*.id}"]
+  subnets         = "${aws_subnet.public.*.id}"
   security_groups = ["${aws_security_group.lb.id}"]
 }
 

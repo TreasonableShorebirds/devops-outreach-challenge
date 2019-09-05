@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "apprentice-outreach" {
           "containerPort": ${var.app_port},
           "hostPort": 80 
         }
-      ],
+      ]
     }
   ]
   DEFINITION
@@ -89,7 +89,7 @@ resource "aws_ecs_task_definition" "outreach-mongodb" {
           "containerPort": ${var.db_port},
           "hostPort": ${var.db_port} 
         }
-      ],
+      ]
     }
   ]
   DEFINITION
@@ -125,7 +125,7 @@ resource "aws_ecs_task_definition" "outreach-node" {
           "containerPort": ${var.node_port},
           "hostPort": ${var.node_port} 
         }
-      ],
+      ]
     }
   ]
   DEFINITION
@@ -140,7 +140,7 @@ resource "aws_ecs_service" "main" {
 
   network_configuration {
     security_groups = ["${aws_security_group.ecs_tasks.id}"]
-    subnets         = ["${aws_subnet.private.*.id}"]
+    subnets         = "${aws_subnet.private.*.id}"
   }
 
   load_balancer {
@@ -184,7 +184,7 @@ resource "aws_ecs_service" "mongodb-service" {
 
   network_configuration {
     security_groups = ["${aws_security_group.ecs_tasks.id}"]
-    subnets         = ["${aws_subnet.private.*.id}"]
+    subnets         = "${aws_subnet.private.*.id}"
   }
 
   # Allow the service to be accessible through service discovery
@@ -200,25 +200,25 @@ resource "aws_ecs_service" "mongodb-service" {
 }
 
 
-resource "aws_service_discovery_service" "node" {
-  name = "node"
-  dns_config {
-    namespace_id = "${var.domain}"
-    routing_policy = "MULTIVALUE"
-    dns_records {
-      ttl = 10
-      type = "A"
-    }
-
-    dns_records {
-      ttl  = 10
-      type = "SRV"
-    }
-  }
-  health_check_custom_config {
-    failure_threshold = 5
-  }
-}
+#resource "aws_service_discovery_service" "node" {
+#  name = "node"
+#  dns_config {
+#    namespace_id = "${var.domain}"
+#    routing_policy = "MULTIVALUE"
+#    dns_records {
+#      ttl = 10
+#      type = "A"
+#    }
+#
+#    dns_records {
+#      ttl  = 10
+#      type = "SRV"
+#    }
+#  }
+#  health_check_custom_config {
+#    failure_threshold = 5
+#  }
+#}
 
 resource "aws_ecs_service" "node-service" {
   name            = "node-service"
@@ -229,7 +229,7 @@ resource "aws_ecs_service" "node-service" {
 
   network_configuration {
     security_groups = ["${aws_security_group.ecs_tasks.id}"]
-    subnets         = ["${aws_subnet.private.*.id}"]
+    subnets         = "${aws_subnet.private.*.id}"
   }
 
   load_balancer {
