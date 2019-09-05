@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "apprentice-outreach" {
       "portMappings": [
         {
           "containerPort": ${var.app_port},
-          "hostPort": 80 
+          "hostPort": ${var.app_port}
         }
       ]
     }
@@ -131,6 +131,8 @@ resource "aws_ecs_task_definition" "outreach-node" {
   DEFINITION
 }
 
+### The target group is mapped directly to the container port so it might need to be 3000, instead of 80.
+### Change the host port to 3000 in the task definition then map to 3000 in the container port section
 resource "aws_ecs_service" "main" {
   name            = "apprentice-outreach-service"
   cluster         = "${aws_ecs_cluster.main.id}"
@@ -154,7 +156,7 @@ resource "aws_ecs_service" "main" {
   ]
 }
 
-### Would make mongodb available at mongodb.liatr.io??
+### Would make mongodb available at mongodb.liatr.io?? or whatever domain is input. You may not have to use a real domain as the namespace
 resource "aws_service_discovery_service" "mongodb" {
   name = "mongodb"
   dns_config {

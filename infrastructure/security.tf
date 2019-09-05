@@ -2,6 +2,7 @@
 # Security groups and configuration for gratibot
 #
 
+### I believe this security group is too permissive, shouldn't need to expose database port through the alb
 resource "aws_security_group" "lb" {
   name        = "tf-ecs-alb"
   description = "controls access to the ALB"
