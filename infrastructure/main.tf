@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "slackbots-tfstates"
-    key    = "state/gratibot.tfstate"
+    key    = "state/apprentice-outreach.tfstate"
     region = "us-east-1"
   }
 }

@@ -14,7 +14,12 @@ variable "az_count" {
 
 variable "app_image" {
   description = "Docker image to run in the ECS cluster"
-  default     = "docker.io/liatrio/apprentice-outreach:latest"
+  default     = "docker.artifactory.liatr.io/liatrio/apprentice-outreach-instruction-application_react:latest"
+}
+
+variable "node_image" {
+  description = "Docker image to run in the ECS cluster"
+  default     = "docker.artifactory.liatr.io/liatrio/apprentice-outreach-instruction-application_node:latest"
 }
 
 variable "app_port" {
@@ -25,6 +30,11 @@ variable "app_port" {
 variable "db_port" {
   description = "Port exposed by the docker image to access the database"
   default     = 27017 
+}
+
+variable "node_port" {
+  description = "Port exposed by the docker image to access the database"
+  default     = 3001
 }
 
 variable "app_count" {
