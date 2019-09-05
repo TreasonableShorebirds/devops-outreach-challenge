@@ -4,5 +4,5 @@ variable "aws_region" {
 
 variable "mongo_db_string" {
   description = "Variable for use when setting up params"
-  default = "mongodb://outreach-mongodb/outreach"
+  default = "mongodb://mongo.liatr.io/outreach"
 }
