@@ -1,11 +1,11 @@
 react:
-  image:
+  image: docker.artifactory.liatr.io/liatrio/apprentice-outreach-instruction-application_react:latest
 
 node:
-  image:
+  image: docker.artifactory.liatr.io/liatrio/apprentice-outreach-instruction-application_node:latest
 
 mongo:
-  image:
+  image: mongo:3.6
 
 ingress:
   enabled: false
