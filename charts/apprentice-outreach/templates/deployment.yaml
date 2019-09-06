@@ -1,39 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apprentice-outreach-react
+  name: outreach-frontend
   labels:
-    app: apprentice-outreach-react
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
 spec:
   selector:
     matchLabels:
-      app: apprentice-outreach-react
+      app: outreach-frontend
   template:
     metadata:
       labels:
-        app: apprentice-outreach-react
+        app: outreach-frontend
     spec:
       containers:
-      - name: {{ .Chart.Name }}
+      - name: outreach-frontend
         image: "{{ .Values.react.image.repository }}:{{ .Values.react.image.tag }}"
-        imagePullPolicy: {{ .Values.react.image.pullPolicy }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apprentice-outreach-node
+  name: outreach-node-api
   labels:
-    app: apprentice-outreach-node
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
 spec:
   selector:
     matchLabels:
-      app: apprentice-outreach-node
+      app: outreach-node-api
   template:
     metadata:
       labels:
-        app: apprentice-outreach-node
+        app: outreach-node-api
     spec:
       containers:
-      - name: outreach-node
+      - name: outreach-node-api
         image: "{{ .Values.node.image.repository }}:{{ .Values.node.image.tag }}"
-        imagePullPolicy: {{ .Values.node.image.pullPolicy }}

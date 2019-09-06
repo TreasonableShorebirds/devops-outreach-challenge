@@ -1,36 +1,17 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "apprentice-outreach.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: "{{ .Chart.Name }}"
   labels:
-{{ include "apprentice-outreach.labels" . | indent 4 }}
-  {{- with .Values.ingress.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
 spec:
-{{- if .Values.ingress.tls }}
-  tls:
-  {{- range .Values.ingress.tls }}
-    - hosts:
-      {{- range .hosts }}
-        - {{ . | quote }}
-      {{- end }}
-      secretName: {{ .secretName }}
-  {{- end }}
-{{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: '{{- .Chart.Name }}.{{- required "ingress.domain is required!" .Values.ingress.domain }}'
       http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+          - path: '/'
             backend:
-              serviceName: {{ $fullName }}
-              servicePort: http
-        {{- end }}
-  {{- end }}
+              serviceName: outreach-frontend
+              servicePort: frontend
 {{- end }}

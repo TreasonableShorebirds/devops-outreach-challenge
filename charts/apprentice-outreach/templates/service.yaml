@@ -1,41 +1,44 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: outreach-react
+  name: outreach-frontend
+  labels:
+      chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
 spec:
-  type: {{ .Values.react.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.react.service.port }}
-      targetPort: {{ .Values.react.service.port}}
-      name: frontend
-    - port: {{ .Values.node.service.port }}
-      targetPort: {{ .Values.node.service.port}}
-      name: backend
+    - port: 3000
+      targetPort: 3000
+      name: outreach-frontend
   selector:
-    app.kubernetes.io/name: react
+    app.kubernetes.io/name: frontend
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: outreach-node
+  name: outreach-node-api
+  labels:
+      chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
 spec:
-  type: {{ .Values.node.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.node.service.port }}
-      targetPort: {{ .Values.node.service.port}}
-      name: backend
+    - port: 3001
+      targetPort: 3001
+      name: outreach-node-api
   selector:
-    app.kubernetes.io/name: node
+    app.kubernetes.io/name: node-api
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: outreach-mongo
+  name: outreach-db
+  labels:
+      chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
 spec:
-  type: {{ .Values.mongo.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.mongo.service.port }}
-      targetPort: {{ .Values.mongo.service.port}}
-      name: mongo
+    - port: 27017
+      targetPort: 27017
+      name: outreach-db
   selector:
-    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/name: mongo
