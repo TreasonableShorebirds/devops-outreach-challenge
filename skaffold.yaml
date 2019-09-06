@@ -16,6 +16,7 @@ deploy:
     flags:
       upgrade: ["--timeout", "600"]
       install: ["--timeout", "600"]
+      namespace: ["toolchain"]
     releases:
       - name: springtrader 
         chartPath: ./charts/apprentice-outreach
