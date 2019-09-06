@@ -16,6 +16,8 @@ spec:
       containers:
       - name: outreach-frontend
         image: "{{ .Values.react.image }}"
+        ports:
+          - containerPort: 3000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -35,3 +37,5 @@ spec:
       containers:
       - name: outreach-node-api
         image: "{{ .Values.node.image }}"
+        ports:
+          - containerPort: 3001
