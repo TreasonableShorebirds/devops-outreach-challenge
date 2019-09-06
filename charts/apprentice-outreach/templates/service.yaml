@@ -1,5 +1,7 @@
 apiVersion: v1
 kind: Service
+metadata:
+  name: outreach-react
 spec:
   type: {{ .Values.react.service.type }}
   ports:
@@ -14,6 +16,8 @@ spec:
 ---
 apiVersion: v1
 kind: Service
+metadata:
+  name: outreach-node
 spec:
   type: {{ .Values.node.service.type }}
   ports:
@@ -25,6 +29,8 @@ spec:
 ---
 apiVersion: v1
 kind: Service
+metadata:
+  name: outreach-mongo
 spec:
   type: {{ .Values.mongo.service.type }}
   ports:
