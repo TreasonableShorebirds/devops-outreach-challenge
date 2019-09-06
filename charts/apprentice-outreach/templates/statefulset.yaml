@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: apprentice-outreach
+spec:
+  selector:
+    matchLabels:
+      app: apprentice-outreach
+  serviceName: "apprentice-outreach"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: apprentice-outreach
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mongodb
+        image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag }}"
+        strategy:
+          type: recreate
+        volumeMounts:
+        - mountPath: /mongo-data
+          name: mongo-data
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.storageClassName | default "gp2" }}
+      resources:
+        requests:
+          storage: "2Gi"

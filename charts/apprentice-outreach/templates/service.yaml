@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+spec:
+  type: {{ .Values.react.service.type }}
+  ports:
+    - port: {{ .Values.react.service.port }}
+      targetPort: {{ .Values.react.service.port}}
+      name: frontend
+    - port: {{ .Values.node.service.port }}
+      targetPort: {{ .Values.node.service.port}}
+      name: backend
+  selector:
+    app.kubernetes.io/name: react
+---
+apiVersion: v1
+kind: Service
+spec:
+  type: {{ .Values.node.service.type }}
+  ports:
+    - port: {{ .Values.node.service.port }}
+      targetPort: {{ .Values.node.service.port}}
+      name: backend
+  selector:
+    app.kubernetes.io/name: node
+---
+apiVersion: v1
+kind: Service
+spec:
+  type: {{ .Values.mongo.service.type }}
+  ports:
+    - port: {{ .Values.mongo.service.port }}
+      targetPort: {{ .Values.mongo.service.port}}
+      name: mongo
+  selector:
+    app.kubernetes.io/name: mongodb

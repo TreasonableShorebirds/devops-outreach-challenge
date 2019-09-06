@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apprentice-outreach-react
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: apprentice-outreach-react
+  template:
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.react.image.repository }}:{{ .Values.react.image.tag }}"
+          imagePullPolicy: {{ .Values.react.image.pullPolicy }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outreach-node
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: outreach-node
+    spec:
+      containers:
+        - name: outreach-node
+          image: "{{ .Values.node.image.repository }}:{{ .Values.node.image.tag }}"
+          imagePullPolicy: {{ .Values.node.image.pullPolicy }}
