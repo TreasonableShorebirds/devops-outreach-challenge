@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: mongodb
-        image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag }}"
+        image: "{{ .Values.mongo.image }}"
         strategy:
           type: recreate
         volumeMounts:

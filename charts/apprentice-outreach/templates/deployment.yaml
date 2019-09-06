@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: outreach-frontend
-        image: "{{ .Values.react.image.repository }}:{{ .Values.react.image.tag }}"
+        image: "{{ .Values.react.image }}"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,4 +34,4 @@ spec:
     spec:
       containers:
       - name: outreach-node-api
-        image: "{{ .Values.node.image.repository }}:{{ .Values.node.image.tag }}"
+        image: "{{ .Values.node.image }}"

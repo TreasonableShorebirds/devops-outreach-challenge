@@ -1,3 +1,12 @@
+react:
+  image:
+
+node:
+  image:
+
+mongo:
+  image:
+
 ingress:
   enabled: false
   annotations: {}
