@@ -14,4 +14,7 @@ spec:
             backend:
               serviceName: outreach-frontend
               servicePort: frontend
+          - path: '/api'
+              serviceName: outreach-node-api
+              servicePort: node-api
 {{- end }}
