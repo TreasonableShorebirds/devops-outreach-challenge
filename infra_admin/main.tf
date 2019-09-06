@@ -28,6 +28,7 @@ resource "aws_ssm_parameter" "mongo_db_string" {
   type        = "SecureString"
 }
 
+#### Don't think this will be used, the ecsTaskExecutionRole already exists with the same properties.
 resource "aws_iam_role" "ecs_task_execution_outreach" {
   name = "ecsTaskExecutionRoleOutreach"
 

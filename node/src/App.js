@@ -8,6 +8,8 @@ const port = 3001
 const User = require('./user');
 const app = express();
 
+app.all('*', function(req, res, next) {   res.header('Access-Control-Allow-Origin', '*');   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');   res.header('Access-Control-Allow-Headers', 'Content-Type');   next(); });
+
 function checkUsername(u) {
   return fetch('https://api.github.com/users/' + u)
   .then(function(a) {
@@ -33,9 +35,10 @@ function encrypt(key) {
 }
 
 const connectWithRetry = function() {
-  return mongoose.connect("mongodb://mongodb/outreach", function(err) {
+  return mongoose.connect("mongodb://mongodb.outreach.liatr.io/outreach", function(err) {
     if (err) {
       console.error('Failed to connect to mongo on startup - retrying in 5 sec');
+      console.log(err);
       setTimeout(connectWithRetry, 5000);
     }
   });

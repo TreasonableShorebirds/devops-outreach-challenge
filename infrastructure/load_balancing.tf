@@ -28,7 +28,7 @@ resource "aws_alb_listener" "front_end" {
 }
 
 resource "aws_alb_target_group" "node" {
-  name        = "tf-ecs-chat"
+  name        = "tf-ecs-node"
   port        = "${var.node_port}" 
   protocol    = "HTTP"
   vpc_id      = "${aws_vpc.main.id}"

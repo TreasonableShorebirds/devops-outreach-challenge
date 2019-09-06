@@ -19,7 +19,7 @@ variable "app_image" {
 
 variable "node_image" {
   description = "Docker image to run in the ECS cluster"
-  default     = "docker.artifactory.liatr.io/liatrio/apprentice-outreach-instruction-application_node:latest"
+  default     = "docker.artifactory.liatr.io/liatrio/apprentice-outreach-instruction-application_node:f325607b8bad"
 }
 
 variable "app_port" {

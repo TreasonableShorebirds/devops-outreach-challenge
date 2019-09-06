@@ -13,7 +13,7 @@ resource "aws_ecs_cluster" "main" {
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_role" "ecs_task_execution" {
-  name = "ecsTaskExecutionRole"
+  name = "ecsTaskExecutionRoleOutreach"
 }
 
 
@@ -39,9 +39,9 @@ resource "aws_ecs_task_definition" "apprentice-outreach" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "Apprentice-Outreach",
+          "awslogs-group": "outreach-react",
           "awslogs-region": "${var.aws_region}",
-          "awslogs-stream-prefix": "apprentice-outreach"
+          "awslogs-stream-prefix": "outreach-react"
         }
       },
       "memory": ${var.fargate_memory},
@@ -156,11 +156,16 @@ resource "aws_ecs_service" "main" {
   ]
 }
 
+resource "aws_service_discovery_public_dns_namespace" "outreach" {
+  name        = "outreach.liatr.io"
+}
+
+
 ### Would make mongodb available at mongodb.liatr.io?? or whatever domain is input. You may not have to use a real domain as the namespace
 resource "aws_service_discovery_service" "mongodb" {
   name = "mongodb"
   dns_config {
-    namespace_id = "${var.domain}"
+    namespace_id = "${aws_service_discovery_public_dns_namespace.outreach.id}"
     routing_policy = "MULTIVALUE"
     dns_records {
       ttl = 10
@@ -175,6 +180,10 @@ resource "aws_service_discovery_service" "mongodb" {
   health_check_custom_config {
     failure_threshold = 5
   }
+
+  depends_on = [
+    "aws_service_discovery_public_dns_namespace.outreach",
+  ]
 }
 
 resource "aws_ecs_service" "mongodb-service" {
