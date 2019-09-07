@@ -1,6 +1,7 @@
 pipeline {
   agent none
   stages {
+    /// [build]
     stage('Build') {
       agent {
         label "lead-toolchain-skaffold"
@@ -14,21 +15,6 @@ pipeline {
       }
     }
     /// [build]
-
-    /// [gate]
-    stage ('Manual Ready Check') {
-      agent none
-      options {
-        timeout(time: 30, unit: 'MINUTES')
-      }
-      input {
-        message 'Deploy to Production?'
-      }
-      steps {
-        echo "Deploying"
-      }
-    }
-    /// [gate]
 
     /// [prod]
     stage("Deploy to Production") {
