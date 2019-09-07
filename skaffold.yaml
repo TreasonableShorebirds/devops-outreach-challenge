@@ -17,7 +17,5 @@ deploy:
     - name: springtrader 
       chartPath: ./charts/apprentice-outreach
       values:
-        react:
-          image: react-frontend
-        node: 
-          image: node-api
+        react.image: react-frontend
+        node.image: node-api 
