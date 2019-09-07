@@ -18,9 +18,6 @@ pipeline {
     /// [gate]
     stage ('Manual Ready Check') {
       agent none
-///      when {
-///        branch 'master'
-///      }
       options {
         timeout(time: 30, unit: 'MINUTES')
       }
@@ -38,9 +35,6 @@ pipeline {
       agent {
         label "lead-toolchain-skaffold"
       }
-///      when {
-///          branch 'master'
-///      }
       environment {
         TILLER_NAMESPACE = "toolchain"
         REACT_APP_IP = "apprentice-outreach.prod.liatr.io"
