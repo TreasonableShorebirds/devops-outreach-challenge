@@ -44,6 +44,7 @@ pipeline {
       environment {
         TILLER_NAMESPACE = "toolchain"
         REACT_APP_IP = "apprentice-outreach.prod.liatr.io"
+        SKAFFOLD_DEFAULT_REPO = ""
       }
       steps {
         container('skaffold') {
