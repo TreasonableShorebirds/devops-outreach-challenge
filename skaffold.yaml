@@ -6,7 +6,8 @@ build:
     context: ./react
   - image: node-api
     context: ./node
-  local: {}
+    local:
+      push: false
 
 deploy:
   helm:
