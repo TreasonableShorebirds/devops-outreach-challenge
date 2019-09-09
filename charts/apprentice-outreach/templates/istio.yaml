@@ -1,4 +1,3 @@
-{{- if not (eq .Values.istioDomain "<no value>") -}}
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -42,4 +41,3 @@ spec:
         host: outreach-frontend
         port:
           number: 3000
-{{- end }}
