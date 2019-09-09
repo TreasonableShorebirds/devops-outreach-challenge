@@ -19,4 +19,5 @@ deploy:
         react.image: react-frontend
         node.image: node-api
       setValueTemplates:
-        ingress.domain: "{{if .INGRESS_DOMAIN}}{{.INGRESS_DOMAIN}}{{else}}local{{end}}"
+        istioDomain: "{{.ISTIO_DOMAIN}}"
+
