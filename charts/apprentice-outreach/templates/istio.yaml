@@ -41,11 +41,11 @@ spec:
         host: outreach-frontend
         port:
           number: 3000
-          #  - match:
-          #    - uri:
-          #        prefix: "/api"
-          #    route:
-          #    - destination:
-          #        host: outreach-node-api
-          #        port:
-          #          number: 3001
+  - match:
+    - uri:
+        prefix: "/api"
+    route:
+    - destination:
+        host: outreach-node-api
+        port:
+          number: 3001
