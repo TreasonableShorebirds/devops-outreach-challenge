@@ -20,3 +20,6 @@ deploy:
       values:
         react.image: react-frontend
         node.image: node-api 
+      setValueTemplates:
+        istioDomain: "{{.ISTIO_DOMAIN}}"
+
