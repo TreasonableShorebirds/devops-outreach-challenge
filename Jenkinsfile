@@ -45,7 +45,7 @@ pipeline {
       }
       post {
         success {
-          notifyStageEnd([status: "Successfully deployed to staging:\nspringtrader.${env.stagingDomain}/spring-nanotrader-web/"])
+          notifyStageEnd([status: "Successfully deployed to staging:\napprentice-outreach.${env.stagingDomain}"])
         }
         failure {
           notifyStageEnd([result: "fail"])
@@ -89,7 +89,7 @@ pipeline {
       }
       post {
         success {
-          notifyStageEnd([status: "Successfully deployed to production:\nspringtrader.${env.productionNamespace}/spring-nanotrader-web/"])
+          notifyStageEnd([status: "Successfully deployed to production:\napprentice-outreach.${env.productionNamespace}/spring-nanotrader-web/"])
         }
         failure {
           notifyStageEnd([result: "fail"])
