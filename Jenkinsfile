@@ -89,7 +89,7 @@ pipeline {
       }
       post {
         success {
-          notifyStageEnd([status: "Successfully deployed to production:\napprentice-outreach.${env.productionNamespace}/spring-nanotrader-web/"])
+          notifyStageEnd([status: "Successfully deployed to production:\napprentice-outreach.${env.productionNamespace}/"])
         }
         failure {
           notifyStageEnd([result: "fail"])
