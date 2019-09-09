@@ -13,7 +13,7 @@ deploy:
       upgrade: ["--timeout", "600", "--namespace", "toolchain"]
       install: ["--timeout", "600", "--namespace", "toolchain"]
     releases:
-    - name: springtrader
+    - name: apprentice-outreach 
       chartPath: charts/apprentice-outreach
       values:
         react.image: react-frontend
