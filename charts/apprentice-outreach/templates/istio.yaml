@@ -36,6 +36,14 @@ spec:
   gateways:
   - "{{ .Chart.Name }}-gateway"
   http:
+  - match:
+    - uri:
+        prefix: "/api"
+    route:
+    - destination:
+        host: outreach-node-api
+        port:
+          number: 3001
   - route:
     - destination:
         host: outreach-frontend

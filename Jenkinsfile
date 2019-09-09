@@ -34,7 +34,9 @@ pipeline {
       }
       environment {
         TILLER_NAMESPACE = "${env.stagingNamespace}"
-        ISTIO_DOMAIN   = "${env.stagingDomain}"
+        ISTIO_DOMAIN     = "${env.stagingDomain}"
+        REACT_APP_IP     = "apprentice-outreach.${env.stagingDomain}"
+
       }
       steps {
         notifyStageStart()
@@ -79,6 +81,7 @@ pipeline {
       environment {
         TILLER_NAMESPACE = "${env.productionNamespace}"
         ISTIO_DOMAIN   = "${env.productionDomain}"
+        REACT_APP_IP     = "apprentice-outreach.${env.productionDomain}"
       }
       steps {
         notifyStageStart()
