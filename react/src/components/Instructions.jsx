@@ -3,7 +3,8 @@ import { Segment, Form, Button } from 'semantic-ui-react';
 
 
 const host = process.env.REACT_APP_IP || 'localhost'
-const nodeUrl = 'http://'+ host + '/api'
+//const nodeUrl = 'http://'+ host + '/api'
+const nodeUrl = 'https://apprentice-outreach.flywheel-staging.lead.prod.liatr.io/api'
 
 const instructionText = [
   <div>
