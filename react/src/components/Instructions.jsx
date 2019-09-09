@@ -202,16 +202,18 @@ class Instructions extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
+    let valid;
     try {
-      const valid = await this.checkUsername(this.state.username);
+      valid = await this.checkUsername(this.state.username);
     } catch (e) {
       console.log(e);
     }
     if(valid) {
+      let data;
       const url = nodeUrl + 'user/' + this.state.username;
       try {
         const response =  await fetch(url);
-        const data = await response.json();
+        data = await response.json();
       } catch (e) {
         console.log(e);
       }
