@@ -203,7 +203,7 @@ class Instructions extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     try {
-    const valid = await this.checkUsername(this.state.username);
+      const valid = await this.checkUsername(this.state.username);
     } catch (e) {
       console.log(e);
     }
