@@ -30,7 +30,7 @@ pipeline {
         label "lead-toolchain-skaffold"
       }
       when {
-          branch 'master'
+          branch 'ENG-909'
       }
       environment {
         TILLER_NAMESPACE = "${env.stagingNamespace}"
@@ -56,7 +56,7 @@ pipeline {
     stage ('Manual Ready Check') {
       agent none
       when {
-        branch 'master'
+        branch 'ENG-909'
       }
       options {
         timeout(time: 30, unit: 'MINUTES')
@@ -74,7 +74,7 @@ pipeline {
         label "lead-toolchain-skaffold"
       }
       when {
-          branch 'master'
+          branch 'ENG-909'
       }
       environment {
         TILLER_NAMESPACE = "${env.productionNamespace}"
