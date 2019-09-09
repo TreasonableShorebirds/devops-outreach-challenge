@@ -36,10 +36,7 @@ spec:
   gateways:
   - "{{ .Chart.Name }}-gateway"
   http:
-  - match:
-    - uri:
-      - prefix: "/"
-    route:
+  - route:
     - destination:
         host: outreach-frontend
         port:
