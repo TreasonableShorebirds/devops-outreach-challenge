@@ -20,4 +20,4 @@ deploy:
         node.image: node-api
       setValueTemplates:
         istioDomain: "{{.ISTIO_DOMAIN}}"
-
+        react.host: "{{.REACT_APP_IP}}"

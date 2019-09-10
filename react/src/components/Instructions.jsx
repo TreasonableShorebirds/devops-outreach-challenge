@@ -3,9 +3,7 @@ import { Segment, Form, Button } from 'semantic-ui-react';
 
 
 const host = process.env.REACT_APP_IP || 'localhost'
-//const nodeUrl = 'http://'+ host + ':3001/'
-
-const nodeUrl = 'https://apprentice-outreach.flywheel-staging.lead.prod.liatr.io/api/'
+const nodeUrl = 'http://' + host + '/api/'
 
 const instructionText = [
   <div>
@@ -197,11 +195,8 @@ class Instructions extends Component {
   }
 
   async checkUsername(u) {
-    console.log('CheckUsername begin');
     const response = await fetch('https://api.github.com/users/' + u);
-    console.log('User data retrieved');
     const data = await response.json();
-    console.log('Data to json done');
     return data.message === 'Not Found' ? false : data;
   }
 
