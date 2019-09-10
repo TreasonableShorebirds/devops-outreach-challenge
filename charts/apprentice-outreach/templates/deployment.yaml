@@ -18,6 +18,10 @@ spec:
         image: "{{ .Values.react.image }}"
         ports:
           - containerPort: 3000
+        env:
+        - name: REACT_APP_IP
+          value: "{{ .Values.react.host }}"
+
 ---
 apiVersion: apps/v1
 kind: Deployment

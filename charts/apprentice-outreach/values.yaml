@@ -1,5 +1,6 @@
 react:
   image: docker.artifactory.liatr.io/liatrio/apprentice-outreach-instruction-application_react:latest
+  host: localhost
 
 node:
   image: docker.artifactory.liatr.io/liatrio/apprentice-outreach-instruction-application_node:latest
