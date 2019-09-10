@@ -56,7 +56,7 @@ db.once('open', function() {
 
 app.use(cors())
 
-app.get('/user/:user', (req, res) => {
+app.get('/api/user/:user', (req, res) => {
     const name = req.params.user
     User.findOne({ githubUsername: name }, function(err, data) {
       console.log(data)
@@ -88,7 +88,7 @@ app.get('/user/:user', (req, res) => {
     });
 })
 
-app.get('/secret/:user/:key', (req, res) => {
+app.get('/api/secret/:user/:key', (req, res) => {
     console.log(req.params)
     User.findOne({ githubUsername: req.params.user }, function(err, data) {
       console.log(data);
@@ -104,7 +104,7 @@ app.get('/secret/:user/:key', (req, res) => {
     })
 })
 
-app.get('/encrypt/:key', (req, res) => {
+app.get('/api/encrypt/:key', (req, res) => {
     const key = req.param.user
 
 });
