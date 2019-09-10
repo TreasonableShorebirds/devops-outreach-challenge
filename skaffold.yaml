@@ -1,0 +1,23 @@
+apiVersion: skaffold/v1beta12
+kind: Config
+build:
+  artifacts:
+  - image: react-frontend
+    context: ./react
+  - image: node-api
+    context: ./node
+
+deploy:
+  helm:
+    flags:
+      upgrade: ["--timeout", "600", "--namespace", "toolchain"]
+      install: ["--timeout", "600", "--namespace", "toolchain"]
+    releases:
+    - name: apprentice-outreach 
+      chartPath: charts/apprentice-outreach
+      values:
+        react.image: react-frontend
+        node.image: node-api
+      setValueTemplates:
+        istioDomain: "{{.ISTIO_DOMAIN}}"
+        react.host: "{{.REACT_APP_IP}}"

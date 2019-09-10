@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: outreach-frontend
+  labels:
+      chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: frontend
+  selector:
+      app: outreach-frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: outreach-node-api
+  labels:
+      chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3001
+      targetPort: 3001
+      name: node-api
+  selector:
+      app: outreach-node-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: outreach-db
+  labels:
+      chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  type: ClusterIP
+  ports:
+    - port: 27017
+      targetPort: 27017
+      name: db
+  selector:
+      app: outreach-db

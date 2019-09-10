@@ -3,7 +3,7 @@ import { Segment, Form, Button } from 'semantic-ui-react';
 
 
 const host = process.env.REACT_APP_IP || 'localhost'
-const nodeUrl = 'http://'+ host + ':3001/'
+const nodeUrl = 'https://' + host + '/api/'
 
 const instructionText = [
   <div>
@@ -202,11 +202,23 @@ class Instructions extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const valid = await this.checkUsername(this.state.username);
+    let valid;
+    try {
+      valid = await this.checkUsername(this.state.username);
+    } catch (e) {
+      console.log(e);
+    }
     if(valid) {
+      let data;
       const url = nodeUrl + 'user/' + this.state.username;
-      const response =  await fetch(url);
-      const data = await response.json();
+      try {
+        const response =  await fetch(url);
+        data = await response.json();
+        console.log('Data Retreived');
+      } catch (e) {
+        console.log('Failed to Retrieve Data');
+        console.log(e);
+      }
       this.props.setkey(data.secret);
       this.props.set(this.state.username);
       this.setState({ notUser: false });

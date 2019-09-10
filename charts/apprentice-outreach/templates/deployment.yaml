@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outreach-frontend
+  labels:
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  selector:
+    matchLabels:
+      app: outreach-frontend
+  template:
+    metadata:
+      labels:
+        app: outreach-frontend
+    spec:
+      containers:
+      - name: outreach-frontend
+        image: "{{ .Values.react.image }}"
+        ports:
+          - containerPort: 3000
+        env:
+        - name: REACT_APP_IP
+          value: "{{ .Values.react.host }}"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outreach-node-api
+  labels:
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  selector:
+    matchLabels:
+      app: outreach-node-api
+  template:
+    metadata:
+      labels:
+        app: outreach-node-api
+    spec:
+      containers:
+      - name: outreach-node-api
+        image: "{{ .Values.node.image }}"
+        ports:
+          - containerPort: 3001

@@ -33,9 +33,10 @@ function encrypt(key) {
 }
 
 const connectWithRetry = function() {
-  return mongoose.connect("mongodb://mongodb/outreach", function(err) {
+  return mongoose.connect("mongodb://outreach-db/outreach", function(err) {
     if (err) {
       console.error('Failed to connect to mongo on startup - retrying in 5 sec');
+      console.log(err);
       setTimeout(connectWithRetry, 5000);
     }
   });
@@ -53,7 +54,7 @@ db.once('open', function() {
 
 app.use(cors())
 
-app.get('/user/:user', (req, res) => {
+app.get('/api/user/:user', (req, res) => {
     const name = req.params.user
     User.findOne({ githubUsername: name }, function(err, data) {
       console.log(data)
@@ -85,7 +86,7 @@ app.get('/user/:user', (req, res) => {
     });
 })
 
-app.get('/secret/:user/:key', (req, res) => {
+app.get('/api/secret/:user/:key', (req, res) => {
     console.log(req.params)
     User.findOne({ githubUsername: req.params.user }, function(err, data) {
       console.log(data);
@@ -101,7 +102,7 @@ app.get('/secret/:user/:key', (req, res) => {
     })
 })
 
-app.get('/encrypt/:key', (req, res) => {
+app.get('/api/encrypt/:key', (req, res) => {
     const key = req.param.user
 
 });
