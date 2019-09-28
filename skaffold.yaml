@@ -8,7 +8,6 @@ build:
     context: ./react
   - image: node-api
     context: ./node
-  
 deploy:
   helm:
     flags:
