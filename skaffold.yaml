@@ -1,12 +1,13 @@
 apiVersion: skaffold/v1beta12
 kind: Config
 build:
+  tagPolicy:
+    dateTime: {}
   artifacts:
   - image: react-frontend
     context: ./react
   - image: node-api
     context: ./node
-
 deploy:
   helm:
     flags:
