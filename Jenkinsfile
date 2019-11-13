@@ -1,4 +1,3 @@
-library 'LEAD'
 pipeline {
   agent none
   stages {
@@ -7,20 +6,10 @@ pipeline {
         label "lead-toolchain-skaffold"
       }
       steps {
-        notifyPipelineStart()
-        notifyStageStart()
         container('skaffold') {
           sh "skaffold build --file-output=image.json"
           stash includes: 'image.json', name: 'build'
           sh "rm image.json"
-        }
-      }
-      post {
-        success {
-          notifyStageEnd()
-        }
-        failure {
-          notifyStageEnd([result: "fail"])
         }
       }
     }
@@ -39,19 +28,11 @@ pipeline {
 
       }
       steps {
-        notifyStageStart()
         container('skaffold') {
           unstash 'build'
           sh "skaffold deploy -a image.json -n ${TILLER_NAMESPACE}"
         }
-      }
-      post {
-        success {
-          notifyStageEnd([status: "Successfully deployed to staging:\napprentice-outreach.${env.stagingDomain}"])
-        }
-        failure {
-          notifyStageEnd([result: "fail"])
-        }
+        stageMessage "Successfully deployed to staging:\napprentice-outreach.${env.stagingDomain}"
       }
     }
 
@@ -84,30 +65,12 @@ pipeline {
         REACT_APP_IP     = "apprentice-outreach.${env.productionDomain}"
       }
       steps {
-        notifyStageStart()
         container('skaffold') {
           unstash 'build'
           sh "skaffold deploy -a image.json -n ${TILLER_NAMESPACE}"
         }
+        stageMessage "Successfully deployed to production:\napprentice-outreach.${env.productionNamespace}/"
       }
-      post {
-        success {
-          notifyStageEnd([status: "Successfully deployed to production:\napprentice-outreach.${env.productionNamespace}/"])
-        }
-        failure {
-          notifyStageEnd([result: "fail"])
-        }
-      }
-    }
-  }
-  post {
-    success {
-      echo "Pipeline Success"
-      notifyPipelineEnd()
-    }
-    failure {
-      echo "Pipeline Fail"
-      notifyPipelineEnd([result: "fail"])
     }
   }
 }
