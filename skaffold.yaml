@@ -10,9 +10,6 @@ build:
     context: ./node
 deploy:
   helm:
-    flags:
-      upgrade: ["--timeout", "600", "--namespace", "toolchain"]
-      install: ["--timeout", "600", "--namespace", "toolchain"]
     releases:
     - name: apprentice-outreach 
       chartPath: charts/apprentice-outreach
