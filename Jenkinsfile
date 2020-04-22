@@ -44,11 +44,8 @@ pipeline {
       options {
         timeout(time: 30, unit: 'MINUTES')
       }
-      input {
-        message 'Deploy to Production?'
-      }
       steps {
-        echo "Deploying"
+        input message: 'Finished using the web site? (Click "Proceed" to continue)'
       }
     }
 
