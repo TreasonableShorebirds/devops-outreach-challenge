@@ -33,13 +33,16 @@ function encrypt(key) {
 }
 
 const connectWithRetry = function() {
-  return mongoose.connect("mongodb://outreach-db/outreach", function(err) {
-    if (err) {
-      console.error('Failed to connect to mongo on startup - retrying in 5 sec');
-      console.log(err);
-      setTimeout(connectWithRetry, 5000);
-    }
-  });
+  return mongoose.connect("mongodb://outreach-db/outreach", { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true }, 
+    function(err) {
+      if (err) {
+        console.error('Failed to connect to mongo on startup - retrying in 5 sec');
+        console.log(err);
+        setTimeout(connectWithRetry, 5000);
+      }
+    } );
 };
 
 connectWithRetry();
