@@ -1,3 +1,4 @@
+{{ if .Values.istio.enabled }}
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -7,7 +8,7 @@ spec:
     istio: ingressgateway
   servers:
   - hosts:
-    - {{ .Chart.Name }}.{{ .Values.istioDomain }}
+    - {{ .Chart.Name }}.{{ .Values.istio.domain }}
     port:
       name: http
       number: 80
@@ -15,7 +16,7 @@ spec:
     tls:
       httpsRedirect: true
   - hosts:
-    - {{ .Chart.Name }}.{{ .Values.istioDomain }}
+    - {{ .Chart.Name }}.{{ .Values.istio.domain }}
     port:
       name: https-default
       number: 443
@@ -32,7 +33,7 @@ metadata:
   name: "{{ .Chart.Name }}"
 spec:
   hosts:
-  - {{ .Chart.Name }}.{{ .Values.istioDomain }}
+  - {{ .Chart.Name }}.{{ .Values.istio.domain }}
   gateways:
   - "{{ .Chart.Name }}-gateway"
   http:
@@ -52,3 +53,4 @@ spec:
         host: outreach-frontend
         port:
           number: 3000
+{{ end }}
