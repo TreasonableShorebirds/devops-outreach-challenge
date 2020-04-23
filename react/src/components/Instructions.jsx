@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
 
 
-const host = process.env.REACT_APP_IP || 'localhost'
-const nodeUrl = 'https://' + host + '/api/'
+// const host = process.env.REACT_APP_IP || 'localhost'
+// const nodeUrl = 'https://' + host + '/api/'
+const nodeUrl = process.env.API_URL || 'http://localhost:3001/api/'
 
 const instructionText = [
   <div>

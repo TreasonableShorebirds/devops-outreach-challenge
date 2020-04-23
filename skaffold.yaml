@@ -17,5 +17,22 @@ deploy:
         react.image: react-frontend
         node.image: node-api
       setValueTemplates:
-        istioDomain: "{{.ISTIO_DOMAIN}}"
-        react.host: "{{.REACT_APP_IP}}"
+        istio.enabled: true
+        istio.domain: "{{.ISTIO_DOMAIN}}"
+        node.url: "{{.API_URL}}"
+profiles:
+- name: local
+  activation:
+  - kubeContext: docker-desktop
+  patches:
+    - op: add
+      path: /deploy/helm/releases/0/setValueTemplates/storageClassName
+      value: hostpath
+    - op: replace
+      path: /deploy/helm/releases/0/setValueTemplates/istio.enabled
+      value: false
+    - op: replace
+      path: /deploy/helm/releases/0/setValueTemplates/node.url
+      value: http://localhost:3001/api/
+      
+

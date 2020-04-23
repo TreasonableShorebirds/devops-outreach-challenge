@@ -24,7 +24,7 @@ pipeline {
       environment {
         TILLER_NAMESPACE = "${env.stagingNamespace}"
         ISTIO_DOMAIN     = "${env.stagingDomain}"
-        REACT_APP_IP     = "apprentice-outreach.${env.stagingDomain}"
+        API_URL          = "https://apprentice-outreach.${env.stagingDomain}/api"
 
       }
       steps {
@@ -58,8 +58,8 @@ pipeline {
       }
       environment {
         TILLER_NAMESPACE = "${env.productionNamespace}"
-        ISTIO_DOMAIN   = "${env.productionDomain}"
-        REACT_APP_IP     = "apprentice-outreach.${env.productionDomain}"
+        ISTIO_DOMAIN     = "${env.productionDomain}"
+        API_URL          = "https://apprentice-outreach.${env.productionDomain}/api"
       }
       steps {
         container('skaffold') {
