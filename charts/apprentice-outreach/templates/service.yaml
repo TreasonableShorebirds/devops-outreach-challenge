@@ -9,7 +9,7 @@ spec:
   ports:
     - port: 3000
       targetPort: 3000
-      name: frontend
+      name: http
   selector:
       app: outreach-frontend
 ---
@@ -24,7 +24,7 @@ spec:
   ports:
     - port: 3001
       targetPort: 3001
-      name: node-api
+      name: http
   selector:
       app: outreach-node-api
 ---

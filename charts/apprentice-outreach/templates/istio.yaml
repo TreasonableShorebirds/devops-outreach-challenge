@@ -1,33 +1,5 @@
 {{ if .Values.istio.enabled }}
 apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: "{{ .Chart.Name }}-gateway"
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-  - hosts:
-    - {{ .Chart.Name }}.{{ .Values.istio.domain }}
-    port:
-      name: http
-      number: 80
-      protocol: HTTP
-    tls:
-      httpsRedirect: true
-  - hosts:
-    - {{ .Chart.Name }}.{{ .Values.istio.domain }}
-    port:
-      name: https-default
-      number: 443
-      protocol: HTTPS
-    tls:
-      mode: SIMPLE
-      serverCertificate: "sds"
-      privateKey: "sds"
-      credentialName: "{{ .Release.Namespace }}-certificate"
----
-apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: "{{ .Chart.Name }}"
@@ -35,7 +7,7 @@ spec:
   hosts:
   - {{ .Chart.Name }}.{{ .Values.istio.domain }}
   gateways:
-  - "{{ .Chart.Name }}-gateway"
+  - istio-system/app-gateway
   http:
   - match:
     - uri:
