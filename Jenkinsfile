@@ -45,7 +45,7 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
       }
       steps {
-        input message: 'Finished using the web site? (Click "Proceed" to continue)'
+        input message: 'Deploy to Production? (Click "Proceed" to continue)'
       }
     }
 
