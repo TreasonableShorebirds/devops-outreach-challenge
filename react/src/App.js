@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import 'semantic-ui-css/semantic.min.css';
-import ConfettiCanvas from 'react-confetti-canvas';
-import { Container, Grid, Segment } from 'semantic-ui-react';
-import MainMenu from './components/MainMenu';
-import Progress from './components/Progress';
-import Buttons from './components/Buttons';
-import Instructions from './components/Instructions';
-import Footer from './components/Footer';
-import './App.css';
+import React, { Component } from "react";
+import "semantic-ui-css/semantic.min.css";
+import ConfettiCanvas from "react-confetti-canvas";
+import { Container, Grid, Segment } from "semantic-ui-react";
+import MainMenu from "./components/MainMenu";
+import Progress from "./components/Progress";
+import Buttons from "./components/Buttons";
+import Instructions from "./components/Instructions";
+import Footer from "./components/Footer";
+import "./App.css";
 
 const numberOfSteps = 8;
 
@@ -20,17 +20,17 @@ class App extends Component {
     let localReading;
     let localCompleted;
     if (window.localStorage) {
-      localUser = JSON.parse(localStorage.getItem('USER'));
-      localKey = JSON.parse(localStorage.getItem('KEY'));
-      localDone = JSON.parse(localStorage.getItem('DONE'));
-      localReading = JSON.parse(localStorage.getItem('READING'));
-      localCompleted = JSON.parse(localStorage.getItem('COMPLETED'));
+      localUser = JSON.parse(localStorage.getItem("USER"));
+      localKey = JSON.parse(localStorage.getItem("KEY"));
+      localDone = JSON.parse(localStorage.getItem("DONE"));
+      localReading = JSON.parse(localStorage.getItem("READING"));
+      localCompleted = JSON.parse(localStorage.getItem("COMPLETED"));
     }
     this.state = {
-      user: localUser || '',
-      key: localKey || '',
-      done: localDone || '',
-      doneReading: localReading || '',
+      user: localUser || "",
+      key: localKey || "",
+      done: localDone || "",
+      doneReading: localReading || "",
       completed: localCompleted || 0, // The number of steps completed
       active: (localCompleted || 0) + 1, // The currently displayed step
     };
@@ -46,15 +46,14 @@ class App extends Component {
   }
 
   completeAll() {
-    this.setState({ done: 'yes' });
-    localStorage.setItem('DONE', JSON.stringify('yes'));
+    this.setState({ done: "yes" });
+    localStorage.setItem("DONE", JSON.stringify("yes"));
   }
 
   completedReading() {
-
-    console.log('test');
-    this.setState({ doneReading: 'yes' });
-    localStorage.setItem('READING', JSON.stringify('yes'));
+    console.log("test");
+    this.setState({ doneReading: "yes" });
+    localStorage.setItem("READING", JSON.stringify("yes"));
     this.updateProgress();
   }
 
@@ -69,24 +68,24 @@ class App extends Component {
   }
 
   clearUser() {
-    this.setState({ user: '', done: '', key: '' });
-    localStorage.removeItem('USER');
-    localStorage.removeItem('DONE');
-    localStorage.removeItem('KEY');
-    localStorage.removeItem('READING');
-    localStorage.removeItem('COMPLETED')
+    this.setState({ user: "", done: "", key: "" });
+    localStorage.removeItem("USER");
+    localStorage.removeItem("DONE");
+    localStorage.removeItem("KEY");
+    localStorage.removeItem("READING");
+    localStorage.removeItem("COMPLETED");
     this.updateCompletion(0);
     this.updateActive(1);
   }
 
   save(u) {
     if (!u) return;
-    localStorage.setItem('USER', JSON.stringify(u));
+    localStorage.setItem("USER", JSON.stringify(u));
   }
 
   saveKey(k) {
     if (!k) return;
-    localStorage.setItem('KEY', JSON.stringify(k));
+    localStorage.setItem("KEY", JSON.stringify(k));
   }
 
   prevStep() {
@@ -103,59 +102,70 @@ class App extends Component {
   nextStep() {
     const currentStep = this.state.active;
     console.log(numberOfSteps);
-    if (currentStep < numberOfSteps) { // length of active
+    if (currentStep < numberOfSteps) {
+      // length of active
       this.setState({ active: currentStep + 1 });
     }
   }
 
   async hasEnabledTravis(u) {
     const url =
-      'https://api.travis-ci.org/repo/' + u +
-      '%2Fapprentice-outreach-demo-application/builds?limit=5';
-    const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
+      "https://api.travis-ci.org/repo/" +
+      u +
+      "%2Fapprentice-outreach-demo-application/builds?limit=5";
+    const response = await fetch(url, {
+      headers: { "Travis-API-Version": "3" },
+    });
     const data = await response.json();
-    return (data.builds && data.builds.length > 0);
+    return data.builds && data.builds.length > 0;
   }
 
   async hasFixedDocker(u) {
     const url =
-      'https://api.travis-ci.org/repo/' + u +
-      '%2Fapprentice-outreach-demo-application/builds?limit=5';
-    const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
+      "https://api.travis-ci.org/repo/" +
+      u +
+      "%2Fapprentice-outreach-demo-application/builds?limit=5";
+    const response = await fetch(url, {
+      headers: { "Travis-API-Version": "3" },
+    });
     const data = await response.json();
     console.log(data.builds[0]);
-    try {
-      if(data.builds[0].stages[1].name !== "Docker-env") {
-        alert("Travis API Change function hasFixedDocker()");
-      }
-      return data.builds[0].stages[1].state === 'passed';
-    } catch(error) {
+    if (data.builds[0].stages[1].name !== "Docker-env") {
       return false;
     }
-
+    return data.builds[0].stages[1].state === "passed";
   }
   async hasFixedBuild(u) {
     const url =
-      'https://api.travis-ci.org/repo/' + u +
-      '%2Fapprentice-outreach-demo-application/builds?limit=5';
-    const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
+      "https://api.travis-ci.org/repo/" +
+      u +
+      "%2Fapprentice-outreach-demo-application/builds?limit=5";
+    const response = await fetch(url, {
+      headers: { "Travis-API-Version": "3" },
+    });
     const data = await response.json();
     console.log(data.builds[0]);
-    const gitHubResponse = await fetch('https://api.github.com/repos/' +
-      u + '/apprentice-outreach-demo-application/contents/.travis.yml' +
-      '?ref=' + data.builds[0].commit.sha);
+    const gitHubResponse = await fetch(
+      "https://api.github.com/repos/" +
+        u +
+        "/apprentice-outreach-demo-application/contents/.travis.yml" +
+        "?ref=" +
+        data.builds[0].commit.sha
+    );
     const gitHubData = await gitHubResponse.json();
-    console.log(gitHubData.sha)
-    return data.builds[0].state === 'passed'; // TODO check SHA matches correct .travis.yml SHA
+    console.log(gitHubData.sha);
+    return data.builds[0].state === "passed"; // TODO check SHA matches correct .travis.yml SHA
   }
 
   async hasAddedTravis(u) {
     const url =
-      'https://api.github.com/repos/' + u + '/apprentice-outreach-demo-application/contents/';
+      "https://api.github.com/repos/" +
+      u +
+      "/apprentice-outreach-demo-application/contents/";
     const response = await fetch(url);
     const data = await response.json();
     for (var key in data) {
-      if (data[key].name === '.travis.yml') {
+      if (data[key].name === ".travis.yml") {
         return true;
       }
     }
@@ -164,7 +174,7 @@ class App extends Component {
 
   async hasForked(u) {
     const url =
-      'https://api.github.com/repos/liatrio/apprentice-outreach-demo-application/forks';
+      "https://api.github.com/repos/liatrio/apprentice-outreach-demo-application/forks";
     const response = await fetch(url);
     const data = await response.json();
     for (var key in data) {
@@ -176,19 +186,19 @@ class App extends Component {
   }
 
   updateCompletion(index) {
-    if(index > numberOfSteps) {
+    if (index > numberOfSteps) {
       index = numberOfSteps;
-    } else if(index < 0) {
+    } else if (index < 0) {
       index = 0;
     }
     this.setState({ completed: index });
-    localStorage.setItem('COMPLETED', JSON.stringify(index));
+    localStorage.setItem("COMPLETED", JSON.stringify(index));
   }
 
   updateActive(index) {
-    if(index > numberOfSteps) {
+    if (index > numberOfSteps) {
       index = numberOfSteps;
-    } else if(index < 1) {
+    } else if (index < 1) {
       index = 1;
     }
     this.setState({ active: index });
@@ -199,60 +209,58 @@ class App extends Component {
   }
 
   async getNewCompletion() {
-    switch(this.state.completed) {
+    switch (this.state.completed) {
       case 0:
-        if(!this.state.doneReading) {
+        if (!this.state.doneReading) {
           return 0;
         }
-        /* Fallthrough */
+      /* Fallthrough */
       case 1:
-        if(this.state.user === '' ) {
+        if (this.state.user === "") {
           return 1;
         }
-        /* Fallthrough */
+      /* Fallthrough */
       case 2:
         const forked = await this.hasForked(this.state.user);
-        if(!forked) {
+        if (!forked) {
           return 2;
         }
-        /* Fallthrough */
+      /* Fallthrough */
       case 3:
         const hasTravis = await this.hasAddedTravis(this.state.user);
-        if(!hasTravis) {
+        if (!hasTravis) {
           return 3;
         }
-        /* Fallthrough */
+      /* Fallthrough */
       case 4:
         const enabledTravis = await this.hasEnabledTravis(this.state.user);
-        if(!enabledTravis) {
+        if (!enabledTravis) {
           return 4;
         }
-        /* Fallthrough */
+      /* Fallthrough */
       case 5:
         const fixedDocker = await this.hasFixedDocker(this.state.user);
-        if(!fixedDocker) {
+        if (!fixedDocker) {
           return 5;
         }
-        /* Fallthrough */
+      /* Fallthrough */
       case 6:
         const fixedBuild = await this.hasFixedBuild(this.state.user);
-        if(!fixedBuild) {
+        if (!fixedBuild) {
           return 6;
         }
-        /* Fallthrough */
+      /* Fallthrough */
       case 7:
-        if(!this.state.done)
-        {
+        if (!this.state.done) {
           return 7;
         }
-        /* Fallthrough */
+      /* Fallthrough */
       default:
         return 8;
     }
   }
 
   async updateProgress() {
-
     const newProgress = await this.getNewCompletion();
     this.updateCompletion(newProgress);
     this.updateActive(newProgress + 1);
@@ -261,41 +269,51 @@ class App extends Component {
   render() {
     return (
       <div>
-        { this.completedAll() ?
+        {this.completedAll() ? (
           <div className="confetti">
             <ConfettiCanvas />
-          </div> : null }
-        <MainMenu clear={ this.clearUser } user={ this.state.user }/>
-        <Container style={{ marginTop: '7em' }}>
+          </div>
+        ) : null}
+        <MainMenu clear={this.clearUser} user={this.state.user} />
+        <Container style={{ marginTop: "7em" }}>
           <Grid>
-            <Grid.Row className='back'>
+            <Grid.Row className="back">
               <Grid.Column width={5}>
                 <Progress
-                  activeStep={ this.state.active }
-                  completedStep={ this.state.completed }
+                  activeStep={this.state.active}
+                  completedStep={this.state.completed}
                 />
                 <Buttons
-                  prevS={ this.prevStep }
-                  nextS={ this.nextStep }
-                  updateP={ this.updateProgress }
+                  prevS={this.prevStep}
+                  nextS={this.nextStep}
+                  updateP={this.updateProgress}
                 />
               </Grid.Column>
               <Grid.Column width={11}>
-                { this.completedAll() ?
-                  <Segment color='green'>
-                    Congratulations, you have completed the DevOps Challenge! <br />
-                    <a target="_blank" rel="noopener noreferrer" href="http://tinyurl.com/liatrio">Link to form</a>
-                  </Segment> :
+                {this.completedAll() ? (
+                  <Segment color="green">
+                    Congratulations, you have completed the DevOps Challenge!{" "}
+                    <br />
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="http://tinyurl.com/liatrio"
+                    >
+                      Link to form
+                    </a>
+                  </Segment>
+                ) : (
                   <Instructions
-                    activeStep={ this.state.active }
-                    set={ this.setUser }
-                    setkey ={ this.setKey }
-                    updateP={ this.updateProgress }
-                    done={ this.completeAll }
-                    user={ this.state.user }
-                    mykey ={ this.state.key }
-                    completedRead = {this.completedReading}
-                  /> }
+                    activeStep={this.state.active}
+                    set={this.setUser}
+                    setkey={this.setKey}
+                    updateP={this.updateProgress}
+                    done={this.completeAll}
+                    user={this.state.user}
+                    mykey={this.state.key}
+                    completedRead={this.completedReading}
+                  />
+                )}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row centered>
