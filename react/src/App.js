@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import "./App.css";
 
 const numberOfSteps = 8;
+const nodeUrl = process.env.API_URL || 'http://localhost:3001/api/'
 
 class App extends Component {
   constructor() {
@@ -27,10 +28,10 @@ class App extends Component {
       localCompleted = JSON.parse(localStorage.getItem("COMPLETED"));
     }
     this.state = {
-      user: localUser || "",
-      key: localKey || "",
-      done: localDone || "",
-      doneReading: localReading || "",
+      user: localUser || 'null',
+      key: localKey || '',
+      done: localDone || 'no',
+      doneReading: localReading || 'no',
       completed: localCompleted || 0, // The number of steps completed
       active: (localCompleted || 0) + 1, // The currently displayed step
     };
@@ -68,12 +69,12 @@ class App extends Component {
   }
 
   clearUser() {
-    this.setState({ user: "", done: "", key: "" });
-    localStorage.removeItem("USER");
-    localStorage.removeItem("DONE");
-    localStorage.removeItem("KEY");
-    localStorage.removeItem("READING");
-    localStorage.removeItem("COMPLETED");
+    this.setState({ user: 'null', done: 'no', key: '' });
+    localStorage.removeItem('USER');
+    localStorage.removeItem('DONE');
+    localStorage.removeItem('KEY');
+    localStorage.removeItem('READING');
+    localStorage.removeItem('COMPLETED');
     this.updateCompletion(0);
     this.updateActive(1);
   }
@@ -108,83 +109,6 @@ class App extends Component {
     }
   }
 
-  async hasEnabledTravis(u) {
-    const url =
-      "https://api.travis-ci.org/repo/" +
-      u +
-      "%2Fapprentice-outreach-demo-application/builds?limit=5";
-    const response = await fetch(url, {
-      headers: { "Travis-API-Version": "3" },
-    });
-    const data = await response.json();
-    return data.builds && data.builds.length > 0;
-  }
-
-  async hasFixedDocker(u) {
-    const url =
-      "https://api.travis-ci.org/repo/" +
-      u +
-      "%2Fapprentice-outreach-demo-application/builds?limit=5";
-    const response = await fetch(url, {
-      headers: { "Travis-API-Version": "3" },
-    });
-    const data = await response.json();
-    console.log(data.builds[0]);
-    if (data.builds[0].stages[1].name !== "Docker-env") {
-      return false;
-    }
-    return data.builds[0].stages[1].state === "passed";
-  }
-  async hasFixedBuild(u) {
-    const url =
-      "https://api.travis-ci.org/repo/" +
-      u +
-      "%2Fapprentice-outreach-demo-application/builds?limit=5";
-    const response = await fetch(url, {
-      headers: { "Travis-API-Version": "3" },
-    });
-    const data = await response.json();
-    console.log(data.builds[0]);
-    const gitHubResponse = await fetch(
-      "https://api.github.com/repos/" +
-        u +
-        "/apprentice-outreach-demo-application/contents/.travis.yml" +
-        "?ref=" +
-        data.builds[0].commit.sha
-    );
-    const gitHubData = await gitHubResponse.json();
-    console.log(gitHubData.sha);
-    return data.builds[0].state === "passed"; // TODO check SHA matches correct .travis.yml SHA
-  }
-
-  async hasAddedTravis(u) {
-    const url =
-      "https://api.github.com/repos/" +
-      u +
-      "/apprentice-outreach-demo-application/contents/";
-    const response = await fetch(url);
-    const data = await response.json();
-    for (var key in data) {
-      if (data[key].name === ".travis.yml") {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  async hasForked(u) {
-    const url =
-      "https://api.github.com/repos/liatrio/apprentice-outreach-demo-application/forks";
-    const response = await fetch(url);
-    const data = await response.json();
-    for (var key in data) {
-      if (data[key].owner.login === u) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   updateCompletion(index) {
     if (index > numberOfSteps) {
       index = numberOfSteps;
@@ -208,60 +132,12 @@ class App extends Component {
     return this.state.completed === numberOfSteps;
   }
 
-  async getNewCompletion() {
-    switch (this.state.completed) {
-      case 0:
-        if (!this.state.doneReading) {
-          return 0;
-        }
-      /* Fallthrough */
-      case 1:
-        if (this.state.user === "") {
-          return 1;
-        }
-      /* Fallthrough */
-      case 2:
-        const forked = await this.hasForked(this.state.user);
-        if (!forked) {
-          return 2;
-        }
-      /* Fallthrough */
-      case 3:
-        const hasTravis = await this.hasAddedTravis(this.state.user);
-        if (!hasTravis) {
-          return 3;
-        }
-      /* Fallthrough */
-      case 4:
-        const enabledTravis = await this.hasEnabledTravis(this.state.user);
-        if (!enabledTravis) {
-          return 4;
-        }
-      /* Fallthrough */
-      case 5:
-        const fixedDocker = await this.hasFixedDocker(this.state.user);
-        if (!fixedDocker) {
-          return 5;
-        }
-      /* Fallthrough */
-      case 6:
-        const fixedBuild = await this.hasFixedBuild(this.state.user);
-        if (!fixedBuild) {
-          return 6;
-        }
-      /* Fallthrough */
-      case 7:
-        if (!this.state.done) {
-          return 7;
-        }
-      /* Fallthrough */
-      default:
-        return 8;
-    }
-  }
-
   async updateProgress() {
-    const newProgress = await this.getNewCompletion();
+    const url = nodeUrl + 'stage/' + this.state.user + '/' + this.state.doneReading + '/' + this.state.done;
+    var response = await fetch(url);
+    var data = await response.json();
+    const newProgress = data.stage;
+
     this.updateCompletion(newProgress);
     this.updateActive(newProgress + 1);
   }
