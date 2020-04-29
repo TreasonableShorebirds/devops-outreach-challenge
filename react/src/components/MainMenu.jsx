@@ -9,7 +9,7 @@ class MainMenu extends Component {
     return (
       <Menu fixed="top" inverted>
         <Container>
-          <Menu.Item header as="a" href="/">
+          <Menu.Item header as="a" href="/" float="left">
             <Image
               size="mini"
               src="https://assets.website-files.com/5c0ef0d637368ba8badd3577/5d38ec257a00daabc1da3514_Project-Product-icon-hex.svg"
@@ -17,6 +17,21 @@ class MainMenu extends Component {
             />
             DevOps Challenge
           </Menu.Item>
+          <Menu.Item header as="a" href="/" float="left">
+            Leaderboard
+          </Menu.Item>
+          {this.props.user ? (
+            <Menu.Item
+              header
+              as="a"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={"https://github.com/" + this.props.user}
+            >
+              <Icon name="github" />
+              {this.props.user}
+            </Menu.Item>
+          ) : null}
           <Dropdown item simple text="Help">
             <Dropdown.Menu>
               <Dropdown.Item
@@ -70,28 +85,57 @@ class MainMenu extends Component {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          {this.props.user ? (
-            <Menu.Item
-              header
-              as="a"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={"https://github.com/" + this.props.user}
-            >
-              <Icon name="github" />
-              {this.props.user}
-            </Menu.Item>
-          ) : null}
           <Menu.Item
             as="a"
             href="/"
             name="Reset Progress"
-            position="right"
             onClick={this.props.clear}
           />
-          <Menu.Item header as="a" href="https://www.liatrio.com/">
-            Liatrio
+          <Menu.Item as="a" href="https://www.liatrio.com/" position="right">
             <Image size="mini" src={logo} style={{ marginLeft: "1.5em" }} />
+            <Dropdown
+              header
+              item
+              simple
+              text="Liatrio"
+              href="https://www.liatrio.com/"
+              direction="left"
+            >
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  as="a"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.liatrio.com/"
+                >
+                  Liatrio
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="a"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.liatrio.com/blog"
+                >
+                  Liatrio Blog
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="a"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.liatrio.com/blog/liatrio-apprenticeship-evolve-past-traditional-it-internships"
+                >
+                  Liatrio Apprenticeship more than an Internship
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="a"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.liatrio.com/blog/github-devops-bootcamp"
+                >
+                  Liatrio Apprentice Bootcamp
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Menu.Item>
         </Container>
       </Menu>
