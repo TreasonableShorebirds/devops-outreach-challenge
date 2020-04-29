@@ -200,24 +200,6 @@ app.get('/api/user/:user', (req, res) => {
     });
 })
 
-      checkUsername(name).then(function (a) {
-        console.log("ENTERED");
-        if (a !== false) {
-          console.log("Adding new user");
-          const newUser = new User();
-          newUser.githubUsername = name;
-          newUser.secretKey = key;
-          newUser.encryptedKey = encryptedKey;
-          newUser.save();
-          res.send({ secret: key });
-        } else {
-          res.send("GITHUB USER DOES NOT EXIST");
-        }
-      });
-    }
-  });
-});
-
 app.get("/api/secret/:user/:key", (req, res) => {
   console.log(req.params);
   User.findOne({ githubUsername: req.params.user }, function (err, data) {
