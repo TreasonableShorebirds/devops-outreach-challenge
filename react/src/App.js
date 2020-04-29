@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import 'semantic-ui-css/semantic.min.css';
-import ConfettiCanvas from 'react-confetti-canvas';
-import { Container, Grid, Segment } from 'semantic-ui-react';
-import MainMenu from './components/MainMenu';
-import Progress from './components/Progress';
-import Buttons from './components/Buttons';
-import Instructions from './components/Instructions';
-import Footer from './components/Footer';
-import './App.css';
+import React, { Component } from "react";
+import "semantic-ui-css/semantic.min.css";
+import ConfettiCanvas from "react-confetti-canvas";
+import { Container, Grid, Segment } from "semantic-ui-react";
+import MainMenu from "./components/MainMenu";
+import Progress from "./components/Progress";
+import Buttons from "./components/Buttons";
+import Instructions from "./components/Instructions";
+import Footer from "./components/Footer";
+import "./App.css";
 
 const numberOfSteps = 8;
 const nodeUrl = process.env.API_URL || 'http://localhost:3001/api/'
@@ -21,11 +21,11 @@ class App extends Component {
     let localReading;
     let localCompleted;
     if (window.localStorage) {
-      localUser = JSON.parse(localStorage.getItem('USER'));
-      localKey = JSON.parse(localStorage.getItem('KEY'));
-      localDone = JSON.parse(localStorage.getItem('DONE'));
-      localReading = JSON.parse(localStorage.getItem('READING'));
-      localCompleted = JSON.parse(localStorage.getItem('COMPLETED'));
+      localUser = JSON.parse(localStorage.getItem("USER"));
+      localKey = JSON.parse(localStorage.getItem("KEY"));
+      localDone = JSON.parse(localStorage.getItem("DONE"));
+      localReading = JSON.parse(localStorage.getItem("READING"));
+      localCompleted = JSON.parse(localStorage.getItem("COMPLETED"));
     }
     this.state = {
       user: localUser || 'null',
@@ -47,15 +47,14 @@ class App extends Component {
   }
 
   completeAll() {
-    this.setState({ done: 'yes' });
-    localStorage.setItem('DONE', JSON.stringify('yes'));
+    this.setState({ done: "yes" });
+    localStorage.setItem("DONE", JSON.stringify("yes"));
   }
 
   completedReading() {
-
-    console.log('test');
-    this.setState({ doneReading: 'yes' });
-    localStorage.setItem('READING', JSON.stringify('yes'));
+    console.log("test");
+    this.setState({ doneReading: "yes" });
+    localStorage.setItem("READING", JSON.stringify("yes"));
     this.updateProgress();
   }
 
@@ -82,12 +81,12 @@ class App extends Component {
 
   save(u) {
     if (!u) return;
-    localStorage.setItem('USER', JSON.stringify(u));
+    localStorage.setItem("USER", JSON.stringify(u));
   }
 
   saveKey(k) {
     if (!k) return;
-    localStorage.setItem('KEY', JSON.stringify(k));
+    localStorage.setItem("KEY", JSON.stringify(k));
   }
 
   prevStep() {
@@ -104,25 +103,26 @@ class App extends Component {
   nextStep() {
     const currentStep = this.state.active;
     console.log(numberOfSteps);
-    if (currentStep < numberOfSteps) { // length of active
+    if (currentStep < numberOfSteps) {
+      // length of active
       this.setState({ active: currentStep + 1 });
     }
   }
 
   updateCompletion(index) {
-    if(index > numberOfSteps) {
+    if (index > numberOfSteps) {
       index = numberOfSteps;
-    } else if(index < 0) {
+    } else if (index < 0) {
       index = 0;
     }
     this.setState({ completed: index });
-    localStorage.setItem('COMPLETED', JSON.stringify(index));
+    localStorage.setItem("COMPLETED", JSON.stringify(index));
   }
 
   updateActive(index) {
-    if(index > numberOfSteps) {
+    if (index > numberOfSteps) {
       index = numberOfSteps;
-    } else if(index < 1) {
+    } else if (index < 1) {
       index = 1;
     }
     this.setState({ active: index });
@@ -145,41 +145,51 @@ class App extends Component {
   render() {
     return (
       <div>
-        { this.completedAll() ?
+        {this.completedAll() ? (
           <div className="confetti">
             <ConfettiCanvas />
-          </div> : null }
-        <MainMenu clear={ this.clearUser } user={ this.state.user }/>
-        <Container style={{ marginTop: '7em' }}>
+          </div>
+        ) : null}
+        <MainMenu clear={this.clearUser} user={this.state.user} />
+        <Container style={{ marginTop: "7em" }}>
           <Grid>
-            <Grid.Row className='back'>
+            <Grid.Row className="back">
               <Grid.Column width={5}>
                 <Progress
-                  activeStep={ this.state.active }
-                  completedStep={ this.state.completed }
+                  activeStep={this.state.active}
+                  completedStep={this.state.completed}
                 />
                 <Buttons
-                  prevS={ this.prevStep }
-                  nextS={ this.nextStep }
-                  updateP={ this.updateProgress }
+                  prevS={this.prevStep}
+                  nextS={this.nextStep}
+                  updateP={this.updateProgress}
                 />
               </Grid.Column>
               <Grid.Column width={11}>
-                { this.completedAll() ?
-                  <Segment color='green'>
-                    Congratulations, you have completed the DevOps Challenge! <br />
-                    <a target="_blank" rel="noopener noreferrer" href="http://tinyurl.com/liatrio">Link to form</a>
-                  </Segment> :
+                {this.completedAll() ? (
+                  <Segment color="green">
+                    Congratulations, you have completed the DevOps Challenge!{" "}
+                    <br />
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="http://tinyurl.com/liatrio"
+                    >
+                      Link to form
+                    </a>
+                  </Segment>
+                ) : (
                   <Instructions
-                    activeStep={ this.state.active }
-                    set={ this.setUser }
-                    setkey ={ this.setKey }
-                    updateP={ this.updateProgress }
-                    done={ this.completeAll }
-                    user={ this.state.user }
-                    mykey ={ this.state.key }
-                    completedRead = {this.completedReading}
-                  /> }
+                    activeStep={this.state.active}
+                    set={this.setUser}
+                    setkey={this.setKey}
+                    updateP={this.updateProgress}
+                    done={this.completeAll}
+                    user={this.state.user}
+                    mykey={this.state.key}
+                    completedRead={this.completedReading}
+                  />
+                )}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row centered>

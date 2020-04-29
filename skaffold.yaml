@@ -19,7 +19,7 @@ deploy:
       setValueTemplates:
         istio.enabled: true
         istio.domain: "{{.ISTIO_DOMAIN}}"
-        node.url: "{{.API_URL}}"
+        node.url: "{{.REACT_APP_API_URL}}"
 profiles:
 - name: local
   activation:
