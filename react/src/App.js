@@ -200,9 +200,6 @@ class App extends Component {
                 )}
               </Grid.Column>
             </Grid.Row>
-            <Grid.Row centered>
-              <Footer />
-            </Grid.Row>
           </Grid>
         </Container>
       </div>
