@@ -6,7 +6,6 @@ import MainMenu from "./components/MainMenu";
 import Progress from "./components/Progress";
 import Buttons from "./components/Buttons";
 import Instructions from "./components/Instructions";
-import Footer from "./components/Footer";
 import "./App.css";
 
 const numberOfSteps = 8;
