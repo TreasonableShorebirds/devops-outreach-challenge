@@ -28,10 +28,10 @@ class App extends Component {
       localCompleted = JSON.parse(localStorage.getItem("COMPLETED"));
     }
     this.state = {
-      user: localUser || 'null',
+      user: localUser || '',
       key: localKey || '',
       done: localDone || 'no',
-      doneReading: localReading || 'no',
+      doneReading: localReading || '',
       completed: localCompleted || 0, // The number of steps completed
       active: (localCompleted || 0) + 1, // The currently displayed step
     };
@@ -69,7 +69,7 @@ class App extends Component {
   }
 
   clearUser() {
-    this.setState({ user: 'null', done: 'no', key: '' });
+    this.setState({ user: '', done: 'no', key: '' });
     localStorage.removeItem('USER');
     localStorage.removeItem('DONE');
     localStorage.removeItem('KEY');
@@ -133,10 +133,19 @@ class App extends Component {
   }
 
   async updateProgress() {
-    const url = nodeUrl + 'stage/' + this.state.user + '/' + this.state.doneReading + '/' + this.state.done;
-    var response = await fetch(url);
-    var data = await response.json();
-    const newProgress = data.stage;
+    var newProgress;
+    if (this.state.user === '') {
+      if (!this.state.doneReading) {
+        newProgress = 0;
+      } else {
+        newProgress = 1;
+      }
+    } else {
+      const url = nodeUrl + 'stage/' + this.state.user + '/' + this.state.done;
+      var response = await fetch(url);
+      var data = await response.json();
+      newProgress = data.stage;
+    }
 
     this.updateCompletion(newProgress);
     this.updateActive(newProgress + 1);
