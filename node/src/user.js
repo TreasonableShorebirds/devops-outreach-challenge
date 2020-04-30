@@ -12,6 +12,10 @@ let userSchema = mongoose.Schema({
     encryptedKey: {
         type: String,
         required: false
+    },
+    stage: {
+      type: Number,
+      required: true
     }
 });
 
