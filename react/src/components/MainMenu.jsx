@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import logo from "../logo.png";
-import { Menu, Icon, Container, Image, Dropdown } from "semantic-ui-react";
+import { Menu, Icon, Container, Image, Dropdown, Segment,
+  TransitionablePortal,} from "semantic-ui-react";
+import Leaderboard from "./Leaderboard"
 
 class MainMenu extends Component {
-  state = { activeItem: "home" };
+  state = { activeItem: "home", open: false };
 
+  handleOpen = () => this.setState({ open: true })
+
+  handleClose = () => this.setState({ open: false })
   render() {
     return (
       <Menu fixed="top" inverted>
@@ -17,9 +22,25 @@ class MainMenu extends Component {
             />
             DevOps Challenge
           </Menu.Item>
-          <Menu.Item header as="a" href="/" float="left">
-            Leaderboard
-          </Menu.Item>
+          <TransitionablePortal
+        closeOnTriggerClick
+        onOpen={this.handleOpen}
+        onClose={this.handleClose}
+        openOnTriggerClick
+        trigger={
+          <Menu.Item
+            content={this.state.open ? 'Close Leaderboard' : 'Leaderboard'}
+            negative={this.state.open}
+            positive={!this.state.open}
+          />
+        }>
+          <Segment
+            style={{ left: '40%', position: 'fixed', top: '10%', zIndex: 1000 }}
+            size='massive'
+          >
+            <Leaderboard/>
+          </Segment>
+        </TransitionablePortal>
           {this.props.user ? (
             <Menu.Item
               header
