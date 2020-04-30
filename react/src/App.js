@@ -53,9 +53,8 @@ class App extends Component {
 
   completedReading() {
     console.log("test");
-    this.setState({ doneReading: "yes" });
+    this.setState({ doneReading: "yes" }, this.updateProgress);
     localStorage.setItem("READING", JSON.stringify("yes"));
-    this.updateProgress();
   }
 
   setUser(u) {
