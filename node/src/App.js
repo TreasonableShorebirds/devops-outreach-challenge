@@ -194,6 +194,12 @@ app.get('/api/stage/:user/:done', async (req, res) => {
     return;
   }
   res.send({stage: 8});
+  User.findOne({ githubUsername: user }, function (err, data) {
+    if (data != null) {
+      data.stage = 8;
+      data.save()
+    }
+  });
 })
 
 app.get('/api/user/:user', (req, res) => {
@@ -217,6 +223,7 @@ app.get('/api/user/:user', (req, res) => {
            newUser.githubUsername = name;
            newUser.secretKey = key;
            newUser.encryptedKey = encryptedKey;
+           newUser.stage = 1;
            newUser.save();
            res.json({ secret: key });
           }
