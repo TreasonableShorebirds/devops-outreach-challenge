@@ -236,6 +236,14 @@ app.get('/api/user/:user', (req, res) => {
     });
 })
 
+app.get("/api/leaderboard/", (req, res) => {
+  User.find({}).sort('-stage').exec(function (err, data) {
+    if (data != null) {
+      res.send(JSON.stringify(data));
+    }
+  });
+});
+
 app.get("/api/secret/:user/:key", (req, res) => {
   console.log(req.params);
   User.findOne({ githubUsername: req.params.user }, function (err, data) {
