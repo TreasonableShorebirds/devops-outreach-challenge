@@ -125,17 +125,9 @@ async function hasForked(u) {
   return false;
 }
 
-app.get('/api/stage/:user/:doneReading/:done', async (req, res) => {
+app.get('/api/stage/:user/:done', async (req, res) => {
   const user = req.params.user;
-  const doneReading = req.params.doneReading;
   const done = req.params.done;
-  if(doneReading == 'no') {
-    res.send({stage: 0});
-  }
-  if(user === 'null' ) {
-    res.send({stage: 1});
-    return;
-  }
   const forked = await hasForked(user);
   if(!forked) {
     res.send({stage: 2});
