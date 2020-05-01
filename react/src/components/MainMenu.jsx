@@ -1,15 +1,22 @@
 import React, { Component } from "react";
 import logo from "../logo.png";
-import { Menu, Icon, Container, Image, Dropdown, Segment,
-  TransitionablePortal,} from "semantic-ui-react";
-import Leaderboard from "./Leaderboard"
+import {
+  Menu,
+  Icon,
+  Container,
+  Image,
+  Dropdown,
+  Segment,
+  TransitionablePortal,
+} from "semantic-ui-react";
+import Leaderboard from "./Leaderboard";
 
 class MainMenu extends Component {
   state = { activeItem: "home", open: false };
 
-  handleOpen = () => this.setState({ open: true })
+  handleOpen = () => this.setState({ open: true });
 
-  handleClose = () => this.setState({ open: false })
+  handleClose = () => this.setState({ open: false });
   render() {
     return (
       <Menu fixed="top" inverted>
@@ -23,24 +30,30 @@ class MainMenu extends Component {
             DevOps Challenge
           </Menu.Item>
           <TransitionablePortal
-        closeOnTriggerClick
-        onOpen={this.handleOpen}
-        onClose={this.handleClose}
-        openOnTriggerClick
-        trigger={
-          <Menu.Item
-            content={this.state.open ? 'Close Leaderboard' : 'Leaderboard'}
-            negative={this.state.open}
-            positive={!this.state.open}
-          />
-        }>
-          <Segment
-            style={{ left: '40%', position: 'fixed', top: '10%', zIndex: 1000 }}
-            size='massive'
+            closeOnTriggerClick
+            onOpen={this.handleOpen}
+            onClose={this.handleClose}
+            openOnTriggerClick
+            trigger={
+              <Menu.Item
+                content={this.state.open ? "Close Leaderboard" : "Leaderboard"}
+                negative={this.state.open}
+                positive={!this.state.open}
+              />
+            }
           >
-            <Leaderboard/>
-          </Segment>
-        </TransitionablePortal>
+            <Segment
+              style={{
+                left: "40%",
+                position: "fixed",
+                top: "10%",
+                zIndex: 1000,
+              }}
+              size="massive"
+            >
+              <Leaderboard />
+            </Segment>
+          </TransitionablePortal>
           {this.props.user ? (
             <Menu.Item
               header
@@ -55,14 +68,6 @@ class MainMenu extends Component {
           ) : null}
           <Dropdown item simple text="Help">
             <Dropdown.Menu>
-              <Dropdown.Item
-                as="a"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/join"
-              >
-                Sign Up for GitHub
-              </Dropdown.Item>
               <Dropdown.Item
                 as="a"
                 target="_blank"
@@ -104,6 +109,14 @@ class MainMenu extends Component {
               >
                 How to Edit a File in a Repository on GitHub
               </Dropdown.Item>
+              <Dropdown.Item
+                as="a"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.docker.com/get-started/"
+              >
+                Getting Started with Docker
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <Menu.Item
@@ -112,16 +125,14 @@ class MainMenu extends Component {
             name="Reset Progress"
             onClick={this.props.clear}
           />
-          <Menu.Item as="a" href="https://www.liatrio.com/" position="right">
-            <Image size="mini" src={logo} style={{ marginLeft: "1.5em" }} />
-            <Dropdown
-              header
-              item
-              simple
-              text="Liatrio"
+          <Menu.Item as="div" position="right" href="https://www.liatrio.com/">
+            <Image
+              size="mini"
               href="https://www.liatrio.com/"
-              direction="left"
-            >
+              src={logo}
+              style={{ marginLeft: "1.5em" }}
+            />
+            <Dropdown item simple text="About Liatrio" direction="left">
               <Dropdown.Menu>
                 <Dropdown.Item
                   as="a"
