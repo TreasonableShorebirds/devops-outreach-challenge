@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
+import diagram from "../diagram.png";
 
 // const host = process.env.REACT_APP_IP || 'localhost'
 // const nodeUrl = 'https://' + host + '/api/'
@@ -7,6 +8,7 @@ const nodeUrl = process.env.REACT_APP_API_URL;
 
 const instructionText = [
   <div>
+    <img src={diagram} alt="Pipeline Diagram" />
     DevOps is a combination of Software Development and Server Operations. It's
     focused on effective solutions to large scale problems. Some important
     DevOps principles are:
