@@ -6,6 +6,7 @@ import MainMenu from "./components/MainMenu";
 import Progress from "./components/Progress";
 import Buttons from "./components/Buttons";
 import Instructions from "./components/Instructions";
+import Footer from "./components/Footer";
 import "./App.css";
 
 const numberOfSteps = 8;
@@ -147,8 +148,8 @@ class App extends Component {
 
     //DELETE
     var temp = await fetch(nodeUrl + 'leaderboard');
-    var tempjson = temp.json();
-    console.log(tempjson);
+    var tempjson = await temp.json();
+    console.log(tempjson[0].githubUsername);
     //console.log(temp[1].githubUsername);
 
     this.updateCompletion(newProgress);
@@ -204,6 +205,9 @@ class App extends Component {
                   />
                 )}
               </Grid.Column>
+            </Grid.Row>
+            <Grid.Row centered>
+              <Footer />
             </Grid.Row>
           </Grid>
         </Container>
