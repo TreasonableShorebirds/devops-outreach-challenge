@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import logo from "../logo.png";
-import { Menu, Icon, Container, Image, Dropdown, Modal, Button} from "semantic-ui-react";
+import { Menu, Icon, Container, Image, Dropdown, Modal} from "semantic-ui-react";
 import Leaderboard from "./Leaderboard"
 
 class MainMenu extends Component {
@@ -50,14 +50,6 @@ class MainMenu extends Component {
                 as="a"
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://github.com/join"
-              >
-                Sign Up for GitHub
-              </Dropdown.Item>
-              <Dropdown.Item
-                as="a"
-                target="_blank"
-                rel="noopener noreferrer"
                 href="https://help.github.com/articles/fork-a-repo/#fork-an-example-repository"
               >
                 How to Fork a Repository on GitHub
@@ -95,6 +87,14 @@ class MainMenu extends Component {
               >
                 How to Edit a File in a Repository on GitHub
               </Dropdown.Item>
+              <Dropdown.Item
+                as="a"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.docker.com/get-started/"
+              >
+                Getting Started with Docker
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <Menu.Item
@@ -103,16 +103,14 @@ class MainMenu extends Component {
             name="Reset Progress"
             onClick={this.props.clear}
           />
-          <Menu.Item as="a" href="https://www.liatrio.com/" position="right">
-            <Image size="mini" src={logo} style={{ marginLeft: "1.5em" }} />
-            <Dropdown
-              header
-              item
-              simple
-              text="Liatrio"
+          <Menu.Item as="div" position="right" href="https://www.liatrio.com/">
+            <Image
+              size="mini"
               href="https://www.liatrio.com/"
-              direction="left"
-            >
+              src={logo}
+              style={{ marginLeft: "1.5em" }}
+            />
+            <Dropdown item simple text="About Liatrio" direction="left">
               <Dropdown.Menu>
                 <Dropdown.Item
                   as="a"
