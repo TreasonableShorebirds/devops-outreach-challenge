@@ -223,6 +223,7 @@ app.get('/api/user/:user', (req, res) => {
            newUser.githubUsername = name;
            newUser.secretKey = key;
            newUser.encryptedKey = encryptedKey;
+           newUser.challenge = 'intial';
            newUser.stage = 1;
            newUser.save();
            res.json({ secret: key });
