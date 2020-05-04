@@ -52,7 +52,6 @@ class App extends Component {
   }
 
   completedReading() {
-    console.log("test");
     this.setState({ doneReading: "yes" }, this.updateProgress);
     localStorage.setItem("READING", JSON.stringify("yes"));
   }
@@ -101,7 +100,6 @@ class App extends Component {
 
   nextStep() {
     const currentStep = this.state.active;
-    console.log(numberOfSteps);
     if (currentStep < numberOfSteps) {
       // length of active
       this.setState({ active: currentStep + 1 });
@@ -145,12 +143,6 @@ class App extends Component {
       var data = await response.json();
       newProgress = data.stage;
     }
-
-    //DELETE
-    var temp = await fetch(nodeUrl + 'leaderboard');
-    var tempjson = await temp.json();
-    console.log(tempjson[0].stage);
-    //console.log(temp[1].githubUsername);
 
     this.updateCompletion(newProgress);
     this.updateActive(newProgress + 1);

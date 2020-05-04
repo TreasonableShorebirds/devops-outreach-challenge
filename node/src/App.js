@@ -73,7 +73,6 @@ async function hasFixedDocker(u) {
     '%2Fapprentice-outreach-demo-application/builds?limit=5';
   const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
   const data = await response.json();
-  //console.log(data.builds[0]);
   try {
     if(data.builds[0].stages[0].name !== "Docker-env") {
       alert("Travis API Change function hasFixedDocker()");
