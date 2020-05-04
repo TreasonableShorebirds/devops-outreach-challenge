@@ -73,12 +73,12 @@ async function hasFixedDocker(u) {
     '%2Fapprentice-outreach-demo-application/builds?limit=5';
   const response = await fetch(url, { headers: { 'Travis-API-Version': '3' } });
   const data = await response.json();
-  console.log(data.builds[0]);
+  //console.log(data.builds[0]);
   try {
-    if(data.builds[0].stages[1].name !== "Docker-env") {
+    if(data.builds[0].stages[0].name !== "Docker-env") {
       alert("Travis API Change function hasFixedDocker()");
     }
-    return data.builds[0].stages[1].state === 'passed';
+    return data.builds[0].stages[0].state === 'passed';
   } catch(error) {
     return false;
   }
