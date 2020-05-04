@@ -10,7 +10,7 @@ import Footer from "./components/Footer";
 import "./App.css";
 
 const numberOfSteps = 8;
-const nodeUrl = process.env.API_URL || "http://localhost:3001/api/";
+const nodeUrl = process.env.API_URL || 'http://localhost:3001/api/'
 
 class App extends Component {
   constructor() {
@@ -28,10 +28,10 @@ class App extends Component {
       localCompleted = JSON.parse(localStorage.getItem("COMPLETED"));
     }
     this.state = {
-      user: localUser || "",
-      key: localKey || "",
-      done: localDone || "no",
-      doneReading: localReading || "",
+      user: localUser || '',
+      key: localKey || '',
+      done: localDone || 'no',
+      doneReading: localReading || '',
       completed: localCompleted || 0, // The number of steps completed
       active: (localCompleted || 0) + 1, // The currently displayed step
     };
@@ -68,12 +68,12 @@ class App extends Component {
   }
 
   clearUser() {
-    this.setState({ user: "", done: "no", key: "" });
-    localStorage.removeItem("USER");
-    localStorage.removeItem("DONE");
-    localStorage.removeItem("KEY");
-    localStorage.removeItem("READING");
-    localStorage.removeItem("COMPLETED");
+    this.setState({ user: '', done: 'no', key: '' });
+    localStorage.removeItem('USER');
+    localStorage.removeItem('DONE');
+    localStorage.removeItem('KEY');
+    localStorage.removeItem('READING');
+    localStorage.removeItem('COMPLETED');
     this.updateCompletion(0);
     this.updateActive(1);
   }
@@ -133,18 +133,24 @@ class App extends Component {
 
   async updateProgress() {
     var newProgress;
-    if (this.state.user === "") {
+    if (this.state.user === '') {
       if (!this.state.doneReading) {
         newProgress = 0;
       } else {
         newProgress = 1;
       }
     } else {
-      const url = nodeUrl + "stage/" + this.state.user + "/" + this.state.done;
+      const url = nodeUrl + 'stage/' + this.state.user + '/' + this.state.done;
       var response = await fetch(url);
       var data = await response.json();
       newProgress = data.stage;
     }
+
+    //DELETE
+    var temp = await fetch(nodeUrl + 'leaderboard');
+    var tempjson = await temp.json();
+    console.log(tempjson[0].stage);
+    //console.log(temp[1].githubUsername);
 
     this.updateCompletion(newProgress);
     this.updateActive(newProgress + 1);

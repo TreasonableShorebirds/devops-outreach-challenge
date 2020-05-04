@@ -12,7 +12,15 @@ let userSchema = mongoose.Schema({
     encryptedKey: {
         type: String,
         required: false
+    },
+    challenge: {
+      type: String,
+      required: true
+    },
+    stage: {
+      type: Number,
+      required: true
     }
-});
+}, {timestamps: true});
 
 let User = module.exports = mongoose.model('User', userSchema);

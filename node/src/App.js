@@ -131,33 +131,75 @@ app.get('/api/stage/:user/:done', async (req, res) => {
   const forked = await hasForked(user);
   if(!forked) {
     res.send({stage: 2});
+    User.findOne({ githubUsername: user }, function (err, data) {
+      if (data != null) {
+        data.stage = 2;
+        data.save()
+      }
+    });
     return;
   }
   const hasTravis = await hasAddedTravis(user);
   if(!hasTravis) {
     res.send({stage: 3});
+    User.findOne({ githubUsername: user }, function (err, data) {
+      if (data != null) {
+        data.stage = 3;
+        data.save()
+      }
+    });
     return;
   }
   const enabledTravis = await hasEnabledTravis(user);
   if(!enabledTravis) {
     res.send({stage: 4});
+    User.findOne({ githubUsername: user }, function (err, data) {
+      if (data != null) {
+        data.stage = 4;
+        data.save()
+      }
+    });
     return;
   }
   const fixedDocker = await hasFixedDocker(user);
   if(!fixedDocker) {
     res.send({stage: 5});
+    User.findOne({ githubUsername: user }, function (err, data) {
+      if (data != null) {
+        data.stage = 5;
+        data.save()
+      }
+    });
     return;
   }
   const fixedBuild = await hasFixedBuild(user);
   if(!fixedBuild) {
     res.send({stage: 6});
+    User.findOne({ githubUsername: user }, function (err, data) {
+      if (data != null) {
+        data.stage = 6;
+        data.save()
+      }
+    });
     return;
   }
   if(done == 'no') {
     res.send({stage: 7});
+    User.findOne({ githubUsername: user }, function (err, data) {
+      if (data != null) {
+        data.stage = 7;
+        data.save()
+      }
+    });
     return;
   }
   res.send({stage: 8});
+  User.findOne({ githubUsername: user }, function (err, data) {
+    if (data != null) {
+      data.stage = 8;
+      data.save()
+    }
+  });
 })
 
 app.get('/api/user/:user', (req, res) => {
@@ -181,6 +223,8 @@ app.get('/api/user/:user', (req, res) => {
            newUser.githubUsername = name;
            newUser.secretKey = key;
            newUser.encryptedKey = encryptedKey;
+           newUser.challenge = 'intial';
+           newUser.stage = 1;
            newUser.save();
            res.json({ secret: key });
           }
@@ -191,6 +235,14 @@ app.get('/api/user/:user', (req, res) => {
       }
     });
 })
+
+app.get("/api/leaderboard/", (req, res) => {
+  User.find({}).sort('-stage').exec(function (err, data) {
+    if (data != null) {
+      res.send(JSON.stringify(data));
+    }
+  });
+});
 
 app.get("/api/secret/:user/:key", (req, res) => {
   console.log(req.params);
