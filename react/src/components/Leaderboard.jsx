@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "semantic-ui-css/semantic.min.css";
 import { Table} from "semantic-ui-react";
 
-const nodeUrl = process.env.API_URL || 'http://localhost:3001/api/'
+const nodeUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/'
 
 class Leaderboard extends Component {
   constructor() {
