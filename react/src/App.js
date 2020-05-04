@@ -10,7 +10,7 @@ import Footer from "./components/Footer";
 import "./App.css";
 
 const numberOfSteps = 8;
-const nodeUrl = process.env.API_URL || 'http://localhost:3001/api/'
+const nodeUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/'
 
 class App extends Component {
   constructor() {
