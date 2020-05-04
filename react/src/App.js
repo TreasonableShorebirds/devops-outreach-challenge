@@ -149,7 +149,7 @@ class App extends Component {
     //DELETE
     var temp = await fetch(nodeUrl + 'leaderboard');
     var tempjson = await temp.json();
-    console.log(tempjson[0].githubUsername);
+    console.log(tempjson[0].stage);
     //console.log(temp[1].githubUsername);
 
     this.updateCompletion(newProgress);
